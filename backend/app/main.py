@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 
-from backend.app.routers import auth_router
+from app.routers import auth_router
 
 app = FastAPI(title="Enrollee-2026")
 
