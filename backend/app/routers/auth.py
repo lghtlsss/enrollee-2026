@@ -7,7 +7,6 @@ from backend.app.models import User
 from backend.app.password_security import hash_password
 from backend.app.database import get_db
 from backend.app.password_security import verify_password
-from backend.app.dependencies import get_current_user
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
 
