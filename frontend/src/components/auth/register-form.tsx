@@ -57,7 +57,7 @@ export const RegisterForm = () => {
         required={true}
       />
       <Button disabled={isPending} type="submit">
-        Зарегестрироваться
+        Зарегистрироваться
       </Button>
       {errorMessage && <p className="text-red-600">{errorMessage}</p>}
     </form>
