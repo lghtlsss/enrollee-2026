@@ -6,5 +6,11 @@ export const Button = ({
 }: DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement> & {
   children: ReactNode;
 }) => {
-  return <button {...props}>{children}</button>;
+  return (
+    <button
+      className="cursor-pointer rounded-2xl border-2 p-2 transition duration-150 hover:bg-gray-800"
+      {...props}>
+      {children}
+    </button>
+  );
 };
