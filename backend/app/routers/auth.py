@@ -1,6 +1,12 @@
 from fastapi import APIRouter, Depends, HTTPException
+from fastapi.security import OAuth2PasswordRequestForm
+from jose import jwt
 from sqlalchemy import select
 from sqlalchemy.orm import Session
+
+from datetime import datetime, timedelta, timezone
+
+from app.config import settings
 
 from app.schemas import SUserResponse, SUserCreate, SLogin
 from app.models import User
@@ -9,6 +15,21 @@ from app.database import get_db
 from app.password_security import verify_password
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
+
+
+def create_access_token(user_id: int) -> str:
+    expire = datetime.now(timezone.utc) + timedelta(minutes=settings.jwt_access_token_expire_minutes)
+
+    payload = {
+        "sub": str(user_id),
+        "exp": expire,
+    }
+
+    return jwt.encode(
+        payload,
+        settings.jwt_secret,
+        algorithm=settings.jwt_algorithm
+    )
 
 
 @router.post('/register', response_model=SUserResponse)
@@ -34,11 +55,17 @@ def register(user: SUserCreate, db=Depends(get_db)):
 
 
 @router.post('/login')
-def login(credentials: SLogin, db: Session = Depends(get_db)):
+def login(credentials: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
     """
     Login a user.
     """
-    user = db.execute(select(User).where(User.email == credentials.email)).scalar_one_or_none()
+    user = db.execute(select(User).where(User.email == credentials.username)).scalar_one_or_none()
     if not user or not verify_password(credentials.password, user.hashed_password):
         raise HTTPException(status_code=401, detail="Invalid email or password")
-    return {"message": "Login successful"}
+
+    access_token = create_access_token(user.id)
+
+    return {
+        "access_token": access_token,
+        "token_type": "bearer"
+    }
