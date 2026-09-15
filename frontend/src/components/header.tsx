@@ -6,7 +6,7 @@ export const Header = () => {
       <div className="text-xl">Название</div>
       <div className="flex gap-2">
         <Link href="/login">Войти</Link>
-        <Link href="/register">Зарегестрироваться</Link>
+        <Link href="/register">Зарегистрироваться</Link>
       </div>
     </header>
   );
