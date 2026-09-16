@@ -7,18 +7,4 @@ from .m_subject import Subject
 from .m_program import Program
 from .m_program_subject import ProgramSubject
 from .m_admission import AdmissionRecord
-from .vibe import UniversityVibe
-
-from app.database import Base
-
-
-__all__ = [
-    "Base",
-    "University",
-    "Direction",
-    "Subject",
-    "Program",
-    "ProgramSubject",
-    "AdmissionRecord",
-    "UniversityVibe",
-]
+from .m_vibe import UniversityVibe
