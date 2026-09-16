@@ -19,12 +19,12 @@ class User(Base):
         nullable=False
     )
 
-    city: Mapped[str] = mapped_column(
+    city: Mapped[str | None] = mapped_column(
         String(50),
         nullable=True
     )
 
-    field_of_study: Mapped[str] = mapped_column(
+    field_of_study: Mapped[str | None] = mapped_column(
         String(50),
         nullable=True
     )
