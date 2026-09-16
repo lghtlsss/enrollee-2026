@@ -36,7 +36,7 @@ export const LoginForm = () => {
   };
 
   return (
-    <form className="flex w-125 flex-col gap-2" onSubmit={handleSubmit}>
+    <form className="mx-auto flex w-125 flex-col gap-2" onSubmit={handleSubmit}>
       <Input id="email" name="email" type="email" placeholder="ваша@почта.com" required={true} />
       <Input
         className="border-2 p-2"
