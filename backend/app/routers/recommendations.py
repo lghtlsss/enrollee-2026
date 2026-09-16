@@ -5,7 +5,7 @@ from app.database import get_db
 from app.services import recommendations as recommendations_service
 from app.schemas.s_recommendation import RecommendationRequest, RecommendationResponse
 
-router = APIRouter(prefix="/recommendations", tags=["recommendations"])
+router = APIRouter(prefix="/recommendations", tags=["Recommendations"])
 
 
 @router.post("", response_model=RecommendationResponse)

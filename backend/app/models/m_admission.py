@@ -15,7 +15,7 @@ class AdmissionRecord(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True)
     program_id: Mapped[int] = mapped_column(
-        ForeignKey("programs.id", ondelete="CASCADE"), nullable=False, index=True
+        ForeignKey("programs.id", ondelete="CASCADE", name="fk_admission_records_program_id"), nullable=False, index=True
     )
     year: Mapped[int] = mapped_column(Integer, nullable=False, index=True)
 

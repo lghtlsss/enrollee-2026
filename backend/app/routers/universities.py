@@ -6,7 +6,7 @@ from app.services import universities as universities_service
 from app.schemas.s_university import UniversityListResponse, UniversityDetail, UniversityVibeResponse
 
 
-router = APIRouter(prefix="/universities", tags=["universities"])
+router = APIRouter(prefix="/universities", tags=["Universities"])
 
 
 @router.get("", response_model=UniversityListResponse)

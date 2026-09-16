@@ -14,10 +14,10 @@ class Program(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True)
     university_id: Mapped[int] = mapped_column(
-        ForeignKey("universities.id", ondelete="CASCADE"), nullable=False, index=True
+        ForeignKey("universities.id", ondelete="CASCADE", name="fk_programs_university_id"), nullable=False, index=True
     )
     direction_id: Mapped[int] = mapped_column(
-        ForeignKey("directions.id", ondelete="RESTRICT"), nullable=False, index=True
+        ForeignKey("directions.id", ondelete="RESTRICT", name="fk_programs_direction_id"), nullable=False, index=True
     )
     name: Mapped[str] = mapped_column(String(255), nullable=False)
     description: Mapped[Optional[str]] = mapped_column(Text, nullable=True)

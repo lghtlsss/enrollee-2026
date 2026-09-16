@@ -11,7 +11,7 @@ class UniversityVibe(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True)
     university_id: Mapped[int] = mapped_column(
-        ForeignKey("universities.id", ondelete="CASCADE"), unique=True, nullable=False
+        ForeignKey("universities.id", ondelete="CASCADE", name="fk_university_vibes_university_id"), unique=True, nullable=False
     )
 
     education: Mapped[Optional[float]] = mapped_column(Float, nullable=True)

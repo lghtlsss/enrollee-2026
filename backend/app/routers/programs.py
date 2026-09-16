@@ -5,7 +5,7 @@ from app.database import get_db
 from app.services import programs as programs_service
 from app.schemas.s_program import ProgramListResponse, ProgramDetail
 
-router = APIRouter(prefix="/programs", tags=["programs"])
+router = APIRouter(prefix="/programs", tags=["Programs"])
 
 
 @router.get("", response_model=ProgramListResponse)
