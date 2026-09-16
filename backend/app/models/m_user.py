@@ -8,7 +8,7 @@ class User(Base):
     __tablename__ = "users"
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    email: Mapped[str] = mapped_column(unique=True)
+    email: Mapped[str] = mapped_column(unique=True, )
     hashed_password: Mapped[str] = mapped_column(nullable=False)
     name: Mapped[str] = mapped_column(
         String(30),
@@ -30,3 +30,7 @@ class User(Base):
     )
 
     fee: Mapped[bool] = mapped_column(Boolean, default=True)
+
+    subjects: Mapped[list["UserSubject"]] = relationship(
+        back_populates="user"
+    )

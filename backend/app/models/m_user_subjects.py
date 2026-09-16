@@ -1,4 +1,4 @@
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy import ForeignKey, CheckConstraint, UniqueConstraint
 from app.database import Base
 
@@ -10,6 +10,9 @@ class UserSubject(Base):
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
     subject_id: Mapped[int] = mapped_column(ForeignKey("subjects.id"))
     score: Mapped[int] = mapped_column(nullable=False)
+
+    user: Mapped["User"] = relationship("User", back_populates="subjects")
+    subject: Mapped["Subject"] = relationship()
 
     __table_args__ = (
         CheckConstraint("score BETWEEN 0 AND 100", name="check_score_range"),
