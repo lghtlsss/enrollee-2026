@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 
 from app.database import get_db
 from app.services import programs as programs_service
-from app.schemas.program import ProgramListResponse, ProgramDetail
+from app.schemas.s_program import ProgramListResponse, ProgramDetail
 
 router = APIRouter(prefix="/programs", tags=["programs"])
 

@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 
 from app.database import get_db
 from app.services import universities as universities_service
-from app.schemas.university import UniversityListResponse, UniversityDetail, UniversityVibeResponse
+from app.schemas.s_university import UniversityListResponse, UniversityDetail, UniversityVibeResponse
 
 
 router = APIRouter(prefix="/universities", tags=["universities"])

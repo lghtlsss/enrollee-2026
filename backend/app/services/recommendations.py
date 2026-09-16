@@ -4,7 +4,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session, joinedload
 
 from app.models import Program, ProgramSubject, AdmissionRecord
-from app.schemas.recommendation import RecommendationRequest, RecommendationItem, Chance
+from app.schemas.s_recommendation import RecommendationRequest, RecommendationItem, Chance
 
 MEDIUM_THRESHOLD = 10
 LOW_THRESHOLD = 25

@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 
 from app.database import get_db
 from app.services import recommendations as recommendations_service
-from app.schemas.recommendation import RecommendationRequest, RecommendationResponse
+from app.schemas.s_recommendation import RecommendationRequest, RecommendationResponse
 
 router = APIRouter(prefix="/recommendations", tags=["recommendations"])
 
