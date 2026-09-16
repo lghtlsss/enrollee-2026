@@ -6,8 +6,10 @@ import { Link } from './ui/link';
 export const Header = () => {
   const { data, isPending } = useQuery({
     queryKey: ['user'],
+    staleTime: Infinity,
     queryFn: getUser,
   });
+  console.log(data);
   return (
     <header className="flex h-20 items-center justify-between border-b-2 p-2">
       <Link href="/">

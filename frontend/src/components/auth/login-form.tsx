@@ -1,6 +1,6 @@
 'use client';
 import { LOGIN_URL } from '@/utils/constants';
-import { QueryClient, useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { SubmitEvent, useState } from 'react';
 import { Button } from '../ui/button';
@@ -23,7 +23,7 @@ const login = async ({ email, password }: { email: string; password: string }) =
 export const LoginForm = () => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const router = useRouter();
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
   const { isPending, mutate } = useMutation({
     mutationFn: login,
     onSuccess: data => {
