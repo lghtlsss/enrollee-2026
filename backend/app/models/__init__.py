@@ -3,7 +3,7 @@ from .m_subjects import Subject
 from .m_user_subjects import UserSubject
 from .m_university import University
 from .m_direction import Direction
-from .m_subject import Subject
+from .m_subjects import Subject
 from .m_program import Program
 from .m_program_subject import ProgramSubject
 from .m_admission import AdmissionRecord
