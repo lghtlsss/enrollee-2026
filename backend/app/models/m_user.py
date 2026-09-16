@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from sqlalchemy import String, ForeignKey
+from sqlalchemy import String, ForeignKey, Boolean
 
 from app.database import Base
 
@@ -19,3 +19,14 @@ class User(Base):
         nullable=False
     )
 
+    city: Mapped[str] = mapped_column(
+        String(50),
+        nullable=True
+    )
+
+    field_of_study: Mapped[str] = mapped_column(
+        String(50),
+        nullable=True
+    )
+
+    fee: Mapped[bool] = mapped_column(Boolean, default=True)
