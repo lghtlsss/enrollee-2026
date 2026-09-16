@@ -17,6 +17,7 @@ export type ExamsScore = {
   physics?: number;
   society?: number;
   geography?: number;
+  chemistry?: number;
 };
 
 export type User = {
@@ -27,4 +28,9 @@ export type User = {
   city?: string;
   educationForm?: 'fullTime' | 'partTime' | 'extramural';
   isBudget?: boolean;
+};
+
+export type JWTPayload = {
+  sub: string;
+  exp: string;
 };

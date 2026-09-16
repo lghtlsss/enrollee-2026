@@ -1,6 +1,6 @@
 'use client';
 import { LOGIN_URL } from '@/utils/constants';
-import { useMutation } from '@tanstack/react-query';
+import { QueryClient, useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { SubmitEvent, useState } from 'react';
 import { Button } from '../ui/button';
@@ -9,17 +9,28 @@ import { Input } from '../ui/input';
 const login = async ({ email, password }: { email: string; password: string }) => {
   const response = await fetch(LOGIN_URL, {
     method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
     body: JSON.stringify({ email, password }),
   });
+  if (!response.ok) {
+    throw new Error('Ошибка авторизации');
+  }
   return response.json();
 };
 
 export const LoginForm = () => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const router = useRouter();
+  const queryClient = new QueryClient();
   const { isPending, mutate } = useMutation({
     mutationFn: login,
-    onSuccess: () => router.push('#'),
+    onSuccess: data => {
+      localStorage.setItem('access_token', data.access_token);
+      queryClient.invalidateQueries({ queryKey: ['user'] });
+      router.push('/');
+    },
     onError: e => setErrorMessage(e.message),
   });
 
@@ -31,7 +42,7 @@ export const LoginForm = () => {
     if (email && password) {
       mutate({ email, password });
     } else {
-      setErrorMessage('Неверно введенные данные');
+      setErrorMessage('Неверно введённые данные');
     }
   };
 
