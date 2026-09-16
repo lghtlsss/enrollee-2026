@@ -9,3 +9,22 @@ export type University = {
   rating: number;
   vibeValue: number;
 };
+
+export type ExamsScore = {
+  russian?: number;
+  math?: number;
+  it?: number;
+  physics?: number;
+  society?: number;
+  geography?: number;
+};
+
+export type User = {
+  id: number;
+  name: string;
+  examsScore?: ExamsScore;
+  direction?: string;
+  city?: string;
+  educationForm?: 'fullTime' | 'partTime' | 'extramural';
+  isBudget?: boolean;
+};
