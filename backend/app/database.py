@@ -12,9 +12,9 @@ class Base(DeclarativeBase):
 
 
 DB_URL = os.getenv("DATABASE_URL")
-engine = create_engine(DB_URL)
+engine = create_engine(DB_URL, echo=False, future=True)
 
-SessionLocal = sessionmaker(bind=engine, expire_on_commit=False)
+SessionLocal = sessionmaker(bind=engine, expire_on_commit=False, autocommit=False, autoflush=False)
 
 
 def get_db():
