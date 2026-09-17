@@ -9,6 +9,10 @@ import type {
   RecommendationItem,
   RecommendationRequest,
   Review,
+  ProfileUpdate,
+  SubjectCatalogItem,
+  SubjectsScores,
+  UpdateSubjects,
   Token,
   UniversityDetail,
   UniversityShort,
@@ -76,8 +80,17 @@ export const api = {
   },
   profile: {
     get: () => request<Profile>('/profile'),
-    update: (data: Profile) =>
-      request<Profile>('/profile', { method: 'PUT', body: JSON.stringify(data) }),
+    update: (data: ProfileUpdate) =>
+      request<Profile>('/profile', { method: 'PATCH', body: JSON.stringify(data) }),
+    getScores: () => request<SubjectsScores>('/profile/scores'),
+    updateScores: (data: UpdateSubjects) =>
+      request<SubjectsScores>('/profile/subjects', {
+        method: 'PUT',
+        body: JSON.stringify(data),
+      }),
+  },
+  subjects: {
+    list: () => request<SubjectCatalogItem[]>('/subjects'),
   },
   directions: {
     list: () => request<Direction[]>('/directions'),

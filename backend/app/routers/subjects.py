@@ -10,7 +10,7 @@ from app.schemas import SSubjectResponse
 router = APIRouter(prefix="/subjects", tags=["Subjects"])
 
 
-@router.get("")
+@router.get("", response_model=list[SSubjectResponse])
 def get_all_subjects(db: Session = Depends(get_db)):
     """Получить список всех предметов"""
     return db.execute(select(Subject)).scalars().all()

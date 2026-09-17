@@ -4,8 +4,12 @@ from sqlalchemy.orm import Session
 from sqlalchemy import select
 
 from app.models import Subject, UserSubject
-from app.schemas import SProfileResponse, SSubjectsAllScoresResponse, SProfileUpdate, SUpdateSubjectsAndScores, \
-    SSubjectScoreInput, SSubjectScoreResponse
+from app.schemas import (
+    SProfileResponse,
+    SSubjectsAllScoresResponse,
+    SProfileUpdate,
+    SUpdateSubjectsAndScores,
+)
 from app.dependencies import get_current_user
 from app.database import get_db
 
@@ -30,6 +34,19 @@ def build_profile_response(user):
     }
 
 
+def build_scores_response(user):
+    return {
+        "subjects": [
+            {
+                "subject_id": link.subject_id,
+                "subject_name": link.subject.name,
+                "score": link.score,
+            }
+            for link in user.subjects
+        ]
+    }
+
+
 @router.get("", response_model=SProfileResponse)
 def get_profile(current_user=Depends(get_current_user)):
     """
@@ -43,10 +60,10 @@ def get_subjects_scores(current_user=Depends(get_current_user)):
     """
     Возвращает баллы абитуриента по предметам
     """
-    return build_profile_response(current_user)
+    return build_scores_response(current_user)
 
 
-@router.patch("/update", response_model=SProfileResponse)
+@router.patch("", response_model=SProfileResponse)
 def update_profile(profile_data: SProfileUpdate, current_user=Depends(get_current_user), db: Session = Depends(get_db)):
     """
     Обновляет профиль абитуриента
@@ -87,12 +104,4 @@ def update_subjects(data: SUpdateSubjectsAndScores, current_user=Depends(get_cur
 
     db.commit()
     db.refresh(current_user)
-    return {"subjects": [
-        {
-            "subject_id": link.subject_id,
-            "subject_name": link.subject.name,
-            "score": link.score,
-        }
-        for link in current_user.subjects
-    ],
-    }
+    return build_scores_response(current_user)

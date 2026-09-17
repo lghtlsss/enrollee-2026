@@ -1,7 +1,12 @@
 'use client';
 
 import { api, clearToken, getToken, setToken } from '@/src/utils/api';
-import type { Profile, RecommendationRequest, UniversityShort } from '@/src/utils/types';
+import type {
+  ProfileUpdate,
+  RecommendationRequest,
+  UniversityShort,
+  UpdateSubjects,
+} from '@/src/utils/types';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 export const useRegister = () =>
@@ -52,11 +57,18 @@ export const useProfile = (enabled: boolean) =>
 export const useSaveProfile = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (profile: Profile) => api.profile.update(profile),
-    onSuccess: profile => queryClient.setQueryData(['profile'], profile),
+    mutationFn: (profile: ProfileUpdate) => api.profile.update(profile),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['profile'] }),
   });
 };
 
+export const useSaveScores = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (scores: UpdateSubjects) => api.profile.updateScores(scores),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['profile'] }),
+  });
+};
 export const useFavorites = (enabled: boolean) =>
   useQuery({ queryKey: ['favorites'], queryFn: api.favorites.list, enabled, retry: false });
 

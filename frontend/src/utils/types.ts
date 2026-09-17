@@ -56,6 +56,11 @@ export type Subject = {
   is_required: boolean;
 };
 
+export type SubjectCatalogItem = {
+  id: number;
+  name: string;
+};
+
 export type AdmissionRecord = {
   year: number;
   passing_score: number | null;
@@ -102,11 +107,38 @@ export type RecommendationItem = {
 };
 
 export type Profile = {
-  scores: Record<string, number>;
-  direction_id: number | null;
+  id: number;
   city: string | null;
-  budget_only: boolean;
-  education_form: 'fullTime' | 'partTime' | 'extramural' | null;
+  field_of_study: string | null;
+  wants_budget: boolean;
+  needs_dormitory: boolean;
+  subjects: {
+    subject_id: number;
+    subject_name: string;
+    score: number;
+  }[];
+};
+
+export type ProfileUpdate = {
+  city?: string | null;
+  field_of_study?: string | null;
+  wants_budget?: boolean;
+  needs_dormitory?: boolean;
+};
+
+export type SubjectsScores = {
+  subjects: {
+    subject_id: number;
+    subject_name: string;
+    score: number;
+  }[];
+};
+
+export type UpdateSubjects = {
+  subjects: {
+    subject_id: number;
+    score: number;
+  }[];
 };
 
 export type ApiError = {

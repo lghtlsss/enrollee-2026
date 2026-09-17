@@ -1,45 +1,26 @@
 'use client';
 
 import { api } from '@/src/utils/api';
+import type { UniversityDetail } from '@/src/utils/types';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
-
-export type Vibe = {
-  energy: number;
-  social: number;
-  comfort: number;
-};
-
-export type ProgramShort = {
-  id: number;
-  title: string;
-  degree: string;
-};
-
-export type UniversityShort = {
-  id: number;
-  name: string;
-  city: string;
-  rating: number | null;
-};
-
-export type UniversityDetail = UniversityShort & {
-  description: string | null;
-  website: string | null;
-  vibe: Vibe | null;
-  programs: ProgramShort[];
-};
+import { FavoriteButton } from './favorite-button';
+import { ReviewCard } from './review-card';
 
 const SECTIONS = ['Обзор', 'Программы', 'Кампус', 'Отзывы'] as const;
 type Section = (typeof SECTIONS)[number];
 
 export const University = ({ universityId }: { universityId: number }) => {
   const [section, setSection] = useState<Section>('Обзор');
-  const [saved, setSaved] = useState(false);
 
   const { data, isPending, error } = useQuery({
     queryKey: ['university', universityId],
     queryFn: () => api.universities.get(universityId),
+  });
+  const reviewsQuery = useQuery({
+    queryKey: ['university-reviews', universityId],
+    queryFn: () => api.universities.reviews(universityId),
+    enabled: section === 'Отзывы',
   });
 
   if (isPending) {
@@ -72,12 +53,9 @@ export const University = ({ universityId }: { universityId: number }) => {
     <div className="min-h-screen bg-[#FAF9F5]">
       {/* Шапка */}
       <header className="relative bg-[#2C3E6B] px-6 pt-10 pb-8 sm:px-10">
-        <button
-          type="button"
-          onClick={() => setSaved(s => !s)}
-          className="absolute top-6 right-6 rounded-full bg-[#FAF9F5] px-4 py-1.5 text-sm text-[#2C3E6B] transition-colors hover:bg-white sm:right-10">
-          {saved ? 'В избранном' : 'В избранное'}
-        </button>
+        <div className="absolute top-6 right-6 sm:right-10">
+          <FavoriteButton universityId={university.id} />
+        </div>
 
         <p className="font-serif text-sm tracking-tight text-[#AEB9DA]">UniVibe</p>
         <h1 className="mt-2 font-serif text-4xl leading-tight text-white sm:text-5xl">
@@ -138,9 +116,9 @@ export const University = ({ universityId }: { universityId: number }) => {
 
             {vibe && (
               <div className="flex w-full flex-col gap-2 sm:w-40">
-                <VibeBar label="Движ" value={vibe.energy} color="#8FB996" />
-                <VibeBar label="Тусовки" value={vibe.social} color="#E8935B" />
-                <VibeBar label="Комфорт" value={vibe.comfort} color="#E6968C" />
+                <VibeBar label="Образование" value={vibe.education ?? 0} color="#8FB996" />
+                <VibeBar label="Карьера" value={vibe.career ?? 0} color="#E8935B" />
+                <VibeBar label="Атмосфера" value={vibe.atmosphere ?? 0} color="#E6968C" />
               </div>
             )}
           </div>
@@ -153,8 +131,10 @@ export const University = ({ universityId }: { universityId: number }) => {
             )}
             {university.programs.map(program => (
               <li key={program.id} className="rounded-xl border border-[#E4E1D8] bg-white p-4">
-                <p className="text-sm text-[#1F2430]">{program.title}</p>
-                <p className="mt-1 text-xs text-[#8B90A0]">{program.degree}</p>
+                <p className="text-sm text-[#1F2430]">{program.name}</p>
+                <p className="mt-1 text-xs text-[#8B90A0]">
+                  Направление №{program.direction_id}
+                </p>
               </li>
             ))}
           </ul>
@@ -165,7 +145,19 @@ export const University = ({ universityId }: { universityId: number }) => {
         )}
 
         {section === 'Отзывы' && (
-          <p className="text-sm text-[#5B6270]">Отзывы студентов появятся здесь.</p>
+          reviewsQuery.isPending ? (
+            <p className="text-sm text-[#5B6270]">Загружаем отзывы…</p>
+          ) : reviewsQuery.error ? (
+            <p className="text-sm text-[#5B6270]">Не удалось загрузить отзывы.</p>
+          ) : reviewsQuery.data?.length ? (
+            <div className="flex flex-col gap-3">
+              {reviewsQuery.data.map(review => (
+                <ReviewCard key={review.id} review={review} />
+              ))}
+            </div>
+          ) : (
+            <p className="text-sm text-[#5B6270]">Отзывов пока нет.</p>
+          )
         )}
       </main>
     </div>

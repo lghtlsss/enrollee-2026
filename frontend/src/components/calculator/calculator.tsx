@@ -1,8 +1,14 @@
 'use client';
 
-import { useLastRequest, useProfile, useSaveProfile, useUser } from '@/src/hooks/use-auth';
+import {
+  useLastRequest,
+  useProfile,
+  useSaveProfile,
+  useSaveScores,
+  useUser,
+} from '@/src/hooks/use-auth';
 import { api } from '@/src/utils/api';
-import { EDUCATION_FORMS, type SubjectName } from '@/src/utils/constants';
+import { type SubjectName } from '@/src/utils/constants';
 import { requestToSearchParams } from '@/src/utils/functions';
 import type { Profile, RecommendationRequest } from '@/src/utils/types';
 import { useQuery } from '@tanstack/react-query';
@@ -27,13 +33,26 @@ const rowsFromScores = (scores: Record<string, number>): ScoreRow[] => {
   return rows.length ? rows : DEFAULT_ROWS;
 };
 
+const rowsFromProfile = (subjects: Profile['subjects']): ScoreRow[] => {
+  const rows = subjects.map(subject => ({
+    subject: subject.subject_name as SubjectName,
+    score: String(subject.score),
+  }));
+  return rows.length ? rows : DEFAULT_ROWS;
+};
+
 export const Calculator = ({ initial }: { initial?: RecommendationRequest | null }) => {
   const router = useRouter();
   const { isAuthenticated } = useUser();
   const { data: profile } = useProfile(isAuthenticated);
   const saveProfile = useSaveProfile();
+  const saveScores = useSaveScores();
   const { setLastRequest } = useLastRequest();
   const { data: directions } = useQuery({ queryKey: ['directions'], queryFn: api.directions.list });
+  const { data: subjects } = useQuery({
+    queryKey: ['subjects'],
+    queryFn: api.subjects.list,
+  });
 
   const [rows, setRows] = useState<ScoreRow[]>(
     initial ? rowsFromScores(initial.scores) : DEFAULT_ROWS,
@@ -43,17 +62,18 @@ export const Calculator = ({ initial }: { initial?: RecommendationRequest | null
   );
   const [city, setCity] = useState(initial?.city ?? '');
   const [budgetOnly, setBudgetOnly] = useState(initial?.budget_only ?? true);
-  const [educationForm, setEducationForm] = useState<Profile['education_form']>('fullTime');
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (initial || !profile || !Object.keys(profile.scores).length) return;
-    setRows(rowsFromScores(profile.scores));
-    setDirectionId(profile.direction_id ? String(profile.direction_id) : '');
+    if (initial || !profile) return;
+    if (profile.subjects.length) {
+      setRows(rowsFromProfile(profile.subjects));
+    }
+    const direction = directions?.find(item => item.name === profile.field_of_study);
+    setDirectionId(direction ? String(direction.id) : '');
     setCity(profile.city ?? '');
-    setBudgetOnly(profile.budget_only);
-    setEducationForm(profile.education_form ?? 'fullTime');
-  }, [profile, initial]);
+    setBudgetOnly(profile.wants_budget);
+  }, [directions, profile, initial]);
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -76,11 +96,27 @@ export const Calculator = ({ initial }: { initial?: RecommendationRequest | null
     };
     setLastRequest(request);
     if (isAuthenticated) {
+      const selectedDirection = directions?.find(item => item.id === request.direction_id);
+      const subjectsByName = new Map(subjects?.map(subject => [subject.name, subject.id]));
+      const profileSubjects = rows.flatMap(row => {
+        const subjectId = subjectsByName.get(row.subject);
+        return subjectId === undefined
+          ? []
+          : [{ subject_id: subjectId, score: Number(row.score) }];
+      });
+
+      if (profileSubjects.length !== rows.length) {
+        setError('Не удалось сопоставить один из предметов с данными backend');
+        return;
+      }
+
       saveProfile.mutate({
-        ...request,
-        direction_id: request.direction_id ?? null,
-        city: request.city ?? null,
-        education_form: educationForm,
+        city: request.city,
+        field_of_study: selectedDirection?.name ?? null,
+        wants_budget: request.budget_only,
+      });
+      saveScores.mutate({
+        subjects: profileSubjects,
       });
     }
     router.push(`/recommendations?${requestToSearchParams(request)}`);
@@ -122,19 +158,6 @@ export const Calculator = ({ initial }: { initial?: RecommendationRequest | null
                 <option key={c} value={c} />
               ))}
             </datalist>
-          </div>
-          <div className="flex flex-col gap-1">
-            <Label htmlFor="educationForm">Форма обучения</Label>
-            <Select
-              id="educationForm"
-              value={educationForm ?? 'fullTime'}
-              onChange={e => setEducationForm(e.target.value as Profile['education_form'])}>
-              {EDUCATION_FORMS.map(f => (
-                <option key={f.value} value={f.value}>
-                  {f.label}
-                </option>
-              ))}
-            </Select>
           </div>
           <div className="flex flex-col gap-1">
             <Label>Финансирование</Label>
