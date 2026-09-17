@@ -13,7 +13,7 @@ import { requestToSearchParams } from '@/src/utils/functions';
 import type { Profile, RecommendationRequest } from '@/src/utils/types';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState, type FormEvent } from 'react';
+import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { Button } from '../ui/button';
 import { Card } from '../ui/card';
 import { Input, Label, Select } from '../ui/input';
@@ -64,16 +64,27 @@ export const Calculator = ({ initial }: { initial?: RecommendationRequest | null
   const [budgetOnly, setBudgetOnly] = useState(initial?.budget_only ?? true);
   const [error, setError] = useState<string | null>(null);
 
+  const profileInitialized = useRef(false);
+
   useEffect(() => {
-    if (initial || !profile) return;
-    const subjects = profile.subjects ?? [];
-    if (subjects.length) {
-      setRows(rowsFromProfile(subjects));
-    }
-    const direction = directions?.find(item => item.name === profile.field_of_study);
-    setDirectionId(direction ? String(direction.id) : '');
+    if (initial || !profile || profileInitialized.current) return;
+
+    profileInitialized.current = true;
+
+    const savedSubjects = profile.subjects ?? [];
+
+    setRows(savedSubjects.length ? rowsFromProfile(savedSubjects) : DEFAULT_ROWS);
+
     setCity(profile.city ?? '');
     setBudgetOnly(profile.wants_budget);
+  }, [profile, initial]);
+
+  useEffect(() => {
+    if (initial || !profile || !directions?.length) return;
+
+    const direction = directions.find(item => item.name === profile.field_of_study);
+
+    setDirectionId(direction ? String(direction.id) : '');
   }, [directions, profile, initial]);
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
