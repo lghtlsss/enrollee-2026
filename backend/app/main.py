@@ -10,7 +10,7 @@ app = FastAPI(title="Enrollee-2026")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:3000",
-                   "https://frontend-artem-6147.vercel.app/"],
+                   "https://frontend-artem-6147.vercel.app"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
