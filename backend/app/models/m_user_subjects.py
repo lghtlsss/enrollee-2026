@@ -25,7 +25,7 @@ class UserSubject(Base):
     score: Mapped[int] = mapped_column(nullable=False)
 
     user: Mapped["User"] = relationship("User", back_populates="subjects")
-    subject: Mapped["Subject"] = relationship()
+    subject: Mapped["Subject"] = relationship("Subject",)
 
     __table_args__ = (
         CheckConstraint("score BETWEEN 0 AND 100", name="check_score_range"),

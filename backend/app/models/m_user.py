@@ -34,5 +34,5 @@ class User(Base):
     needs_dormitory: Mapped[bool] = mapped_column(Boolean, default=False)
 
     subjects: Mapped[list["UserSubject"]] = relationship(
-        back_populates="user"
+        back_populates="user", cascade="all, delete-orphan"
     )

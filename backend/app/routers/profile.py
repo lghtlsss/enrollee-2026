@@ -1,12 +1,33 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 
 from sqlalchemy.orm import Session
+from sqlalchemy import select
 
-from app.schemas import SProfileResponse, SSubjectsScoresResponse, SProfileUpdate
+from app.models import Subject, UserSubject
+from app.schemas import SProfileResponse, SSubjectsAllScoresResponse, SProfileUpdate, SUpdateSubjectsAndScores, \
+    SSubjectScoreInput, SSubjectScoreResponse
 from app.dependencies import get_current_user
 from app.database import get_db
 
 router = APIRouter(prefix="/profile", tags=["Profile"])
+
+
+def build_profile_response(user):
+    return {
+        "id": user.id,
+        "city": user.city,
+        "field_of_study": user.field_of_study,
+        "wants_budget": user.wants_budget,
+        "needs_dormitory": user.needs_dormitory,
+        "subjects": [
+            {
+                "subject_id": link.subject_id,
+                "subject_name": link.subject.name,
+                "score": link.score,
+            }
+            for link in user.subjects
+        ],
+    }
 
 
 @router.get("", response_model=SProfileResponse)
@@ -14,15 +35,15 @@ def get_profile(current_user=Depends(get_current_user)):
     """
     Возвращает профиль абитуриента(то есть не данные пользователя, а именно то что важно при расчете вузов)
     """
-    return current_user
+    return build_profile_response(current_user)
 
 
-@router.get("/scores", response_model=SSubjectsScoresResponse)
+@router.get("/scores", response_model=SSubjectsAllScoresResponse)
 def get_subjects_scores(current_user=Depends(get_current_user)):
     """
     Возвращает баллы абитуриента по предметам
     """
-    return current_user
+    return build_profile_response(current_user)
 
 
 @router.patch("/update", response_model=SProfileResponse)
@@ -35,4 +56,35 @@ def update_profile(profile_data: SProfileUpdate, current_user=Depends(get_curren
 
     db.commit()
     db.refresh(current_user)
-    return current_user
+    return build_profile_response(current_user)
+
+
+@router.put("/subjects", response_model=SSubjectsAllScoresResponse)
+def update_subjects(data: SUpdateSubjectsAndScores, current_user=Depends(get_current_user),
+                    db: Session = Depends(get_db)):
+    """
+    Обновляет список предметов абитуриента
+    """
+    subject_ids = [item.subject_id for item in data.subjects]
+
+    if len(subject_ids) != len(set(subject_ids)):
+        raise HTTPException(status_code=400, detail="Duplicate subject IDs are not allowed.")
+
+    subjects = db.scalars(select(Subject).where(Subject.id.in_(subject_ids))).all()
+    subjects_by_id = {subject.id: subject for subject in subjects}
+    if len(subjects_by_id) != len(subject_ids):
+        raise HTTPException(status_code=400, detail="One or more subject IDs are invalid.")
+
+    current_user.subjects.clear()
+
+    for item in data.subjects:
+        current_user.subjects.append(
+            UserSubject(
+                subject_id=item.subject_id,
+                score=item.score,
+            )
+        )
+
+    db.commit()
+    db.refresh(current_user)
+    return build_profile_response(current_user)
