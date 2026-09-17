@@ -36,6 +36,7 @@ export type UniversityShort = {
   name: string;
   city: string;
   rating: number | null;
+  has_dormitory: boolean;
 };
 
 export type UniversityDetail = UniversityShort & {

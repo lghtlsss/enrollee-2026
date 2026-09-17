@@ -66,8 +66,9 @@ export const Calculator = ({ initial }: { initial?: RecommendationRequest | null
 
   useEffect(() => {
     if (initial || !profile) return;
-    if (profile.subjects.length) {
-      setRows(rowsFromProfile(profile.subjects));
+    const subjects = profile.subjects ?? [];
+    if (subjects.length) {
+      setRows(rowsFromProfile(subjects));
     }
     const direction = directions?.find(item => item.name === profile.field_of_study);
     setDirectionId(direction ? String(direction.id) : '');
@@ -100,9 +101,7 @@ export const Calculator = ({ initial }: { initial?: RecommendationRequest | null
       const subjectsByName = new Map(subjects?.map(subject => [subject.name, subject.id]));
       const profileSubjects = rows.flatMap(row => {
         const subjectId = subjectsByName.get(row.subject);
-        return subjectId === undefined
-          ? []
-          : [{ subject_id: subjectId, score: Number(row.score) }];
+        return subjectId === undefined ? [] : [{ subject_id: subjectId, score: Number(row.score) }];
       });
 
       if (profileSubjects.length !== rows.length) {
