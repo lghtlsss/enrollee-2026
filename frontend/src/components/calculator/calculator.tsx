@@ -8,7 +8,7 @@ import {
   useUser,
 } from '@/src/hooks/use-auth';
 import { api } from '@/src/utils/api';
-import { type SubjectName } from '@/src/utils/constants';
+import { SUBJECT_KEYS, SUBJECT_LABELS, type SubjectName } from '@/src/utils/constants';
 import { requestToSearchParams } from '@/src/utils/functions';
 import type { Profile, RecommendationRequest } from '@/src/utils/types';
 import { useQuery } from '@tanstack/react-query';
@@ -27,7 +27,7 @@ const DEFAULT_ROWS: ScoreRow[] = [
 
 const rowsFromScores = (scores: Record<string, number>): ScoreRow[] => {
   const rows = Object.entries(scores).map(([subject, score]) => ({
-    subject: subject as SubjectName,
+    subject: SUBJECT_LABELS[subject] ?? (subject as SubjectName),
     score: String(score),
   }));
   return rows.length ? rows : DEFAULT_ROWS;
@@ -35,7 +35,7 @@ const rowsFromScores = (scores: Record<string, number>): ScoreRow[] => {
 
 const rowsFromProfile = (subjects: Profile['subjects']): ScoreRow[] => {
   const rows = subjects.map(subject => ({
-    subject: subject.subject_name as SubjectName,
+    subject: SUBJECT_LABELS[subject.subject_name] ?? (subject.subject_name as SubjectName),
     score: String(subject.score),
   }));
   return rows.length ? rows : DEFAULT_ROWS;
@@ -87,7 +87,7 @@ export const Calculator = ({ initial }: { initial?: RecommendationRequest | null
         setError(`Введите балл от 0 до 100 по предмету «${row.subject}»`);
         return;
       }
-      scores[row.subject] = value;
+      scores[SUBJECT_KEYS[row.subject]] = value;
     }
     setError(null);
 
@@ -103,8 +103,10 @@ export const Calculator = ({ initial }: { initial?: RecommendationRequest | null
       const selectedDirection = directions?.find(item => item.id === request.direction_id);
       const subjectsByName = new Map(subjects?.map(subject => [subject.name, subject.id]));
       const profileSubjects = rows.flatMap(row => {
-        const subjectId = subjectsByName.get(row.subject);
-        return subjectId === undefined ? [] : [{ subject_id: subjectId, score: Number(row.score) }];
+        const subjectId = subjectsByName.get(SUBJECT_KEYS[row.subject]);
+        return subjectId === undefined
+          ? []
+          : [{ subject_id: subjectId, score: Number(row.score) }];
       });
 
       if (profileSubjects.length !== rows.length) {

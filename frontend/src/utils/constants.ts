@@ -21,6 +21,24 @@ export const SUBJECTS = [
 
 export type SubjectName = (typeof SUBJECTS)[number];
 
+export const SUBJECT_KEYS: Record<SubjectName, string> = {
+  'Русский язык': 'russian',
+  Математика: 'math',
+  Информатика: 'informatics',
+  Физика: 'physics',
+  Химия: 'chemistry',
+  Биология: 'biology',
+  История: 'history',
+  Обществознание: 'social',
+  География: 'geography',
+  Литература: 'literature',
+  'Иностранный язык': 'english',
+};
+
+export const SUBJECT_LABELS: Record<string, SubjectName> = Object.fromEntries(
+  Object.entries(SUBJECT_KEYS).map(([label, key]) => [key, label]),
+) as Record<string, SubjectName>;
+
 export const EDUCATION_FORMS = [
   { value: 'fullTime', label: 'Очная' },
   { value: 'partTime', label: 'Очно-заочная' },

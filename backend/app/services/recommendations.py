@@ -8,6 +8,10 @@ MEDIUM_THRESHOLD = 10
 LOW_THRESHOLD = 25
 
 
+def _normalize_city(city: str) -> str:
+    return " ".join(city.casefold().replace("ё", "е").replace("-", " ").split())
+
+
 def _latest_admission_record(program: Program) -> AdmissionRecord | None:
     if not program.admission_records:
         return None
@@ -44,7 +48,10 @@ def _fetch_candidate_programs(
     programs = db.execute(query).unique().scalars().all()
 
     if city is not None:
-        programs = [p for p in programs if p.university.city.lower() == city.lower()]
+        requested_city = _normalize_city(city)
+        programs = [
+            p for p in programs if _normalize_city(p.university.city) == requested_city
+        ]
 
     if needs_dormitory:
         programs = [p for p in programs if p.university.has_dormitory]
