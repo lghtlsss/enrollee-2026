@@ -85,6 +85,7 @@ export const requestToSearchParams = (req: RecommendationRequest) => {
   if (req.direction_id) params.set('direction_id', String(req.direction_id));
   if (req.city) params.set('city', req.city);
   if (req.budget_only) params.set('budget_only', '1');
+  if (req.needs_dormitory) params.set('needs_dormitory', '1');
   return params;
 };
 
@@ -107,6 +108,7 @@ export const searchParamsToRequest = (
       direction_id: direction ? Number(direction) : null,
       city: get('city') || null,
       budget_only: get('budget_only') === '1',
+      needs_dormitory: get('needs_dormitory') === '1',
     };
   } catch {
     return null;

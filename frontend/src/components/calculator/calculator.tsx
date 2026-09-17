@@ -62,6 +62,7 @@ export const Calculator = ({ initial }: { initial?: RecommendationRequest | null
   );
   const [city, setCity] = useState(initial?.city ?? '');
   const [budgetOnly, setBudgetOnly] = useState(initial?.budget_only ?? true);
+  const [needsDormitory, setNeedsDormitory] = useState(initial?.needs_dormitory ?? false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -74,6 +75,7 @@ export const Calculator = ({ initial }: { initial?: RecommendationRequest | null
     setDirectionId(direction ? String(direction.id) : '');
     setCity(profile.city ?? '');
     setBudgetOnly(profile.wants_budget);
+    setNeedsDormitory(profile.needs_dormitory);
   }, [directions, profile, initial]);
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -94,6 +96,7 @@ export const Calculator = ({ initial }: { initial?: RecommendationRequest | null
       direction_id: directionId ? Number(directionId) : null,
       city: city.trim() || null,
       budget_only: budgetOnly,
+      needs_dormitory: needsDormitory,
     };
     setLastRequest(request);
     if (isAuthenticated) {
@@ -113,6 +116,7 @@ export const Calculator = ({ initial }: { initial?: RecommendationRequest | null
         city: request.city,
         field_of_study: selectedDirection?.name ?? null,
         wants_budget: request.budget_only,
+        needs_dormitory: request.needs_dormitory,
       });
       saveScores.mutate({
         subjects: profileSubjects,
@@ -176,6 +180,32 @@ export const Calculator = ({ initial }: { initial?: RecommendationRequest | null
                   onClick={() => setBudgetOnly(option.value)}
                   className={`rounded-lg px-3 py-2 text-sm font-semibold transition ${
                     budgetOnly === option.value
+                      ? 'bg-navy text-white'
+                      : 'text-navy hover:bg-lavender'
+                  }`}>
+                  {option.label}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div className="flex flex-col gap-1">
+            <Label>Общежитие</Label>
+            <div
+              className="grid grid-cols-2 gap-1 rounded-xl bg-lavender-soft p-1"
+              role="radiogroup"
+              aria-label="Общежитие">
+              {[
+                { value: false, label: 'Не нужно' },
+                { value: true, label: 'Нужно' },
+              ].map(option => (
+                <button
+                  key={String(option.value)}
+                  type="button"
+                  role="radio"
+                  aria-checked={needsDormitory === option.value}
+                  onClick={() => setNeedsDormitory(option.value)}
+                  className={`rounded-lg px-3 py-2 text-sm font-semibold transition ${
+                    needsDormitory === option.value
                       ? 'bg-navy text-white'
                       : 'text-navy hover:bg-lavender'
                   }`}>

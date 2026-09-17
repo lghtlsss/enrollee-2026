@@ -73,4 +73,5 @@ export const NAV_ITEMS = [
   { href: '/', label: 'Подбор' },
   { href: '/universities', label: 'Вузы' },
   { href: '/favorites', label: 'Избранное' },
+  { href: '/deadlines', label: 'Дедлайны' },
 ] as const;

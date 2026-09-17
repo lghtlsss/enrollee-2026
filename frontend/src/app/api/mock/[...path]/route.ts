@@ -392,6 +392,9 @@ async function handle(request: NextRequest, segments: string[]) {
       if (body.city && university.city.toLowerCase() !== body.city.toLowerCase()) {
         continue;
       }
+      if (body.needs_dormitory && !university.has_dormitory) {
+        continue;
+      }
 
       const record = latestAdmission(program.admission_records);
 

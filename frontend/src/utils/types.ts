@@ -100,6 +100,7 @@ export type RecommendationRequest = {
   direction_id?: number | null;
   city?: string | null;
   budget_only: boolean;
+  needs_dormitory: boolean;
 };
 
 export type RecommendationItem = {
