@@ -67,7 +67,7 @@ export const Header = () => {
       <div className="bg-cream px-4 pt-5 sm:px-6">
         <nav
           aria-label="Разделы"
-          className="mx-auto grid w-full max-w-5xl grid-cols-2 gap-2 rounded-2xl border-2 border-lavender bg-paper p-2 sm:grid-cols-4 sm:gap-3 sm:p-3">
+          className="mx-auto grid w-full max-w-5xl grid-cols-2 gap-2 rounded-2xl border-2 border-lavender bg-paper p-2 sm:grid-cols-3 sm:gap-3 sm:p-3">
           {NAV_ITEMS.map(item => {
             const active = isActive(pathname, item.href);
             return (

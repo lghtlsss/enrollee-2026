@@ -1,7 +1,6 @@
 import type { Chance } from './types';
 
-export const BACKEND_URL =
-  process.env.NEXT_PUBLIC_BACKEND_URL ?? '/api/mock';
+export const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL ?? '/api/mock';
 
 export const TOKEN_KEY = 'access_token';
 
@@ -73,5 +72,4 @@ export const NAV_ITEMS = [
   { href: '/', label: 'Подбор' },
   { href: '/universities', label: 'Вузы' },
   { href: '/favorites', label: 'Избранное' },
-  { href: '/compare', label: 'Сравнение' },
 ] as const;
