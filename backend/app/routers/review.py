@@ -25,7 +25,8 @@ def create_review(review: SReviewCreate, current_user=Depends(get_current_user),
         author=current_user.name + " " + current_user.surname,
         uni_id=review.uni_id,
         rating=review.rating,
-        text=review.text
+        text=review.text,
+        tags=review.tags,
     )
     db.add(new_review)
     db.commit()
