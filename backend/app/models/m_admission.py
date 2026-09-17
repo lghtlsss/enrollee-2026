@@ -8,6 +8,7 @@ from app.database import Base
 
 
 class AdmissionRecord(Base):
+    """Связь программы, вуза и проходного балла"""
     __tablename__ = "admission_records"
     __table_args__ = (
         UniqueConstraint("program_id", "year", name="uq_admission_program_year"),

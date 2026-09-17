@@ -7,6 +7,7 @@ from app.database import Base
 
 
 class Program(Base):
+    """Программы в вузах"""
     __tablename__ = "programs"
     __table_args__ = (
         UniqueConstraint("university_id", "name", name="uq_program_university_name"),

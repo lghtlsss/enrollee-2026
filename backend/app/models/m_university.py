@@ -8,6 +8,7 @@ from app.database import Base
 
 
 class University(Base):
+    """Вузы"""
     __tablename__ = "universities"
 
     id: Mapped[int] = mapped_column(primary_key=True)

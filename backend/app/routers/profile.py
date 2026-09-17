@@ -1,7 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException
 
+from sqlalchemy import delete, select
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
-from sqlalchemy import select
 
 from app.models import Subject, UserSubject
 from app.schemas import (
@@ -93,16 +94,23 @@ def update_subjects(data: SUpdateSubjectsAndScores, current_user=Depends(get_cur
     if len(subjects_by_id) != len(subject_ids):
         raise HTTPException(status_code=400, detail="One or more subject IDs are invalid.")
 
-    current_user.subjects.clear()
+    db.execute(delete(UserSubject).where(UserSubject.user_id == current_user.id))
+    db.flush()
 
     for item in data.subjects:
-        current_user.subjects.append(
+        db.add(
             UserSubject(
+                user_id=current_user.id,
                 subject_id=item.subject_id,
                 score=item.score,
             )
         )
 
-    db.commit()
-    db.refresh(current_user)
+    try:
+        db.commit()
+    except IntegrityError:
+        db.rollback()
+        raise HTTPException(status_code=409, detail="Could not update subjects.")
+
+    db.expire(current_user, ["subjects"])
     return build_scores_response(current_user)
