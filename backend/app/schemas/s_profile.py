@@ -34,3 +34,15 @@ class SProfileUpdate(BaseModel):
     field_of_study: str | None = None
     wants_budget: bool | None = None
     needs_dormitory: bool | None = None
+
+
+class SFullUserResponse(BaseModel):
+    id: int
+    email: str
+    name: str
+    surname: str
+    city: str | None = None
+    field_of_study: str | None = None
+    wants_budget: bool = True
+    needs_dormitory: bool = False
+    subjects: list[SSubjectScoreResponse]

@@ -9,6 +9,7 @@ from app.schemas import (
     SSubjectsAllScoresResponse,
     SProfileUpdate,
     SUpdateSubjectsAndScores,
+    SFullUserResponse
 )
 from app.dependencies import get_current_user
 from app.database import get_db
@@ -47,12 +48,12 @@ def build_scores_response(user):
     }
 
 
-@router.get("", response_model=SProfileResponse)
+@router.get("", response_model=SFullUserResponse)
 def get_profile(current_user=Depends(get_current_user)):
     """
     Возвращает профиль абитуриента(то есть не данные пользователя, а именно то что важно при расчете вузов)
     """
-    return build_profile_response(current_user)
+    return current_user
 
 
 @router.get("/scores", response_model=SSubjectsAllScoresResponse)
