@@ -76,7 +76,7 @@ export const Calculator = ({ initial }: { initial?: RecommendationRequest | null
     setBudgetOnly(profile.wants_budget);
   }, [directions, profile, initial]);
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const scores: Record<string, number> = {};
     for (const row of rows) {
@@ -109,14 +109,25 @@ export const Calculator = ({ initial }: { initial?: RecommendationRequest | null
         return;
       }
 
-      saveProfile.mutate({
-        city: request.city,
-        field_of_study: selectedDirection?.name ?? null,
-        wants_budget: request.budget_only,
-      });
-      saveScores.mutate({
-        subjects: profileSubjects,
-      });
+      try {
+        await Promise.all([
+          saveProfile.mutateAsync({
+            city: request.city,
+            field_of_study: selectedDirection?.name ?? null,
+            wants_budget: request.budget_only,
+          }),
+          saveScores.mutateAsync({
+            subjects: profileSubjects,
+          }),
+        ]);
+      } catch (mutationError) {
+        setError(
+          mutationError instanceof Error
+            ? mutationError.message
+            : 'Не удалось сохранить профиль.',
+        );
+        return;
+      }
     }
     router.push(`/recommendations?${requestToSearchParams(request)}`);
   };
@@ -198,8 +209,11 @@ export const Calculator = ({ initial }: { initial?: RecommendationRequest | null
               ? 'Профиль сохранится автоматически.'
               : 'Войдите, чтобы сохранить баллы и избранное.'}
           </p>
-          <Button type="submit" className="sm:min-w-56">
-            Подобрать вузы
+          <Button
+            type="submit"
+            className="sm:min-w-56"
+            disabled={saveProfile.isPending || saveScores.isPending}>
+            {saveProfile.isPending || saveScores.isPending ? 'Сохраняем…' : 'Подобрать вузы'}
           </Button>
         </div>
       </form>

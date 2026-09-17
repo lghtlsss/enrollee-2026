@@ -141,7 +141,20 @@ export const University = ({ universityId }: { universityId: number }) => {
         )}
 
         {section === 'Кампус' && (
-          <p className="text-sm text-[#5B6270]">Раздел о кампусе появится здесь.</p>
+          <div className="grid gap-3 sm:grid-cols-2">
+            <div className="rounded-xl border border-[#E4E1D8] bg-white p-4">
+              <p className="text-xs uppercase tracking-wide text-[#8B90A0]">Общежитие</p>
+              <p className="mt-2 text-sm font-semibold text-[#1F2430]">
+                {university.has_dormitory ? 'Есть' : 'Нет данных о наличии'}
+              </p>
+            </div>
+            <div className="rounded-xl border border-[#E4E1D8] bg-white p-4">
+              <p className="text-xs uppercase tracking-wide text-[#8B90A0]">Инфраструктура</p>
+              <p className="mt-2 text-sm text-[#5B6270]">
+                Подробная информация о кампусе пока не добавлена.
+              </p>
+            </div>
+          </div>
         )}
 
         {section === 'Отзывы' && (

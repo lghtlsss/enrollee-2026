@@ -82,9 +82,13 @@ export const ReviewForm = ({ universityId }: { universityId: number }) => {
               onChange={event => setRating(event.target.value)}
               className="w-full rounded-xl border border-line bg-paper px-4 py-2.5 text-sm text-ink transition focus:border-navy focus:ring-2 focus:ring-navy/20 focus:outline-none">
               <option value="5">5 — отлично</option>
+              <option value="4.5">4.5 — очень хорошо</option>
               <option value="4">4 — хорошо</option>
+              <option value="3.5">3.5 — выше среднего</option>
               <option value="3">3 — нормально</option>
+              <option value="2.5">2.5 — ниже среднего</option>
               <option value="2">2 — плохо</option>
+              <option value="1.5">1.5 — очень плохо</option>
               <option value="1">1 — очень плохо</option>
             </select>
           </div>

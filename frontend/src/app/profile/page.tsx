@@ -1,4 +1,5 @@
 import { AuthGate } from '@/src/components/auth/auth-gate';
+import { ProfilePreferencesForm } from '@/src/components/profile/profile-preferences-form';
 import { ProfileScoresForm } from '@/src/components/profile/profile-scores-form';
 import type { Metadata } from 'next';
 
@@ -20,7 +21,10 @@ export default function ProfilePage() {
         title="Войдите, чтобы открыть профиль"
         description="Сохранённые баллы и настройки профиля привязаны к вашему аккаунту."
         next="/profile">
-        <ProfileScoresForm />
+        <div className="flex flex-col gap-6">
+          <ProfilePreferencesForm />
+          <ProfileScoresForm />
+        </div>
       </AuthGate>
     </div>
   );

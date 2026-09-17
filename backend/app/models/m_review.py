@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from sqlalchemy import ForeignKey, Float, String, JSON
+from sqlalchemy import DateTime, ForeignKey, Float, String, JSON
 
 from datetime import datetime
 from app.database import Base
@@ -14,9 +14,13 @@ class Review(Base):
     author: Mapped[str] = mapped_column(String(100), nullable=False)
     uni_id: Mapped[int] = mapped_column(ForeignKey("universities.id", ondelete="CASCADE"), nullable=False)
     rating: Mapped[float] = mapped_column(Float, nullable=False)
-    text: Mapped[str] = mapped_column(String(300), nullable=True)
-    tags: Mapped[list[str]] = mapped_column(JSON, default=list)
-    created_at: Mapped[datetime] = mapped_column(default=datetime.now)
+    text: Mapped[str] = mapped_column(String(300), nullable=False)
+    tags: Mapped[list[str]] = mapped_column(JSON, default=list, nullable=False)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        default=datetime.now,
+        nullable=False,
+    )
 
     user: Mapped["User"] = relationship(back_populates="reviews")
     university: Mapped["University"] = relationship(back_populates="reviews")

@@ -14,7 +14,7 @@ class University(Base):
     name: Mapped[str] = mapped_column(String(255), unique=True, nullable=False, index=True)
     description: Mapped[str | None] = mapped_column(Text, nullable=True)
     city: Mapped[str] = mapped_column(String(100), nullable=False, index=True)
-    has_dormitory: Mapped[str] = mapped_column(Boolean, nullable=False, default=False)
+    has_dormitory: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
     website: Mapped[str | None] = mapped_column(String(255), nullable=True)
     rating: Mapped[float | None] = mapped_column(Float, nullable=True)
 
