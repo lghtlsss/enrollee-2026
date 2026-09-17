@@ -1,16 +1,15 @@
-from typing import Optional
 from pydantic import BaseModel, ConfigDict
 
-from app.schemas.s_program import ProgramShort  # noqa: E402
+from app.schemas.s_program import ProgramShort
 
 class UniversityVibeResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
-    education: Optional[float] = None
-    career: Optional[float] = None
-    student_life: Optional[float] = None
-    atmosphere: Optional[float] = None
-    workload: Optional[float] = None
+    education: float | None = None
+    career: float | None = None
+    student_life: float | None = None
+    atmosphere: float | None = None
+    workload: float | None = None
 
 
 class UniversityShort(BaseModel):
@@ -20,7 +19,8 @@ class UniversityShort(BaseModel):
     id: int
     name: str
     city: str
-    rating: Optional[float] = None
+    has_dormitory: bool
+    rating: float | None = None
 
 
 class UniversityDetail(BaseModel):
@@ -29,16 +29,15 @@ class UniversityDetail(BaseModel):
 
     id: int
     name: str
-    description: Optional[str] = None
+    description: str | None = None
     city: str
-    website: Optional[str] = None
-    rating: Optional[float] = None
-    vibe: Optional[UniversityVibeResponse] = None
-    programs: list["ProgramShort"] = []
+    has_dormitory: bool
+    website: str | None = None
+    rating: float | None = None
+    vibe: UniversityVibeResponse | None = None
+    programs: list[ProgramShort] = []
 
 
 class UniversityListResponse(BaseModel):
     total: int
     items: list[UniversityShort]
-
-UniversityDetail.model_rebuild()

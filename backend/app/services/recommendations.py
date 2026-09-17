@@ -1,5 +1,3 @@
-from typing import Optional
-
 from sqlalchemy import select
 from sqlalchemy.orm import Session, joinedload
 
@@ -10,13 +8,13 @@ MEDIUM_THRESHOLD = 10
 LOW_THRESHOLD = 25
 
 
-def _latest_admission_record(program: Program) -> Optional[AdmissionRecord]:
+def _latest_admission_record(program: Program) -> AdmissionRecord | None:
     if not program.admission_records:
         return None
     return max(program.admission_records, key=lambda r: r.year)
 
 
-def _compute_chance(user_total: int, passing_score: Optional[int]) -> Chance:
+def _compute_chance(user_total: int, passing_score: int | None) -> Chance | None:
     if passing_score is None:
         return "unknown"
     diff = user_total - passing_score
@@ -30,7 +28,7 @@ def _compute_chance(user_total: int, passing_score: Optional[int]) -> Chance:
 
 
 def _fetch_candidate_programs(
-    db: Session, direction_id: Optional[int], city: Optional[str]
+    db: Session, direction_id: int | None, city: str | None
 ) -> list[Program]:
     query = select(Program).options(
         joinedload(Program.university),
@@ -58,7 +56,7 @@ def get_recommendations(
     for program in programs:
         record = _latest_admission_record(program)
         if record is None:
-            continue  # нет данных о поступлении — не можем оценить
+            continue
 
         if request.budget_only and not record.budget_places:
             continue
@@ -67,16 +65,16 @@ def get_recommendations(
             link.subject.name for link in program.subject_links if link.is_required
         ]
         if not required_subjects:
-            continue  # программа без заданных предметов — некорректные данные, пропускаем
+            continue
 
         if not all(subj in request.scores for subj in required_subjects):
-            continue  # у пользователя нет баллов по одному из обязательных предметов
+            continue
 
         user_total = sum(request.scores[subj] for subj in required_subjects)
 
         chance = _compute_chance(user_total, record.passing_score)
         if chance is None:
-            continue  # ниже порога low — не показываем вообще
+            continue
 
         results.append(
             RecommendationItem(
