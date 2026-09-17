@@ -1,11 +1,11 @@
 'use client';
 
-import { Button } from '@/src/components/ui/button';
-import { Card } from '@/src/components/ui/card';
-import { Input, Label, Select } from '@/src/components/ui/input';
-import { useProfile, useSaveScores, useUser } from '@/src/hooks/use-auth';
-import { api } from '@/src/utils/api';
-import type { SubjectsScores } from '@/src/utils/types';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { Input, Label, Select } from '@/components/ui/input';
+import { useProfile, useSaveScores, useUser } from '@/hooks/use-auth';
+import { api } from '@/utils/api';
+import type { SubjectsScores } from '@/utils/types';
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 

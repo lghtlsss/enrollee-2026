@@ -1,5 +1,5 @@
-import { AuthGate } from '@/src/components/auth/auth-gate';
-import { FavoritesList } from '@/src/components/favorites/favorites-list';
+import { AuthGate } from '@/components/auth/auth-gate';
+import { FavoritesList } from '@/components/favorites/favorites-list';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = { title: 'Избранное — UniVibe' };

@@ -1,5 +1,5 @@
-import { VIBE_META } from '@/src/utils/constants';
-import type { Vibe } from '@/src/utils/types';
+import { VIBE_META } from '@/utils/constants';
+import type { Vibe } from '@/utils/types';
 
 const tone = (value: number) =>
   value >= 4.3 ? 'bg-chance-high' : value >= 3.8 ? 'bg-chance-medium' : 'bg-chance-low';

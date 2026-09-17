@@ -1,5 +1,5 @@
-import { CHANCE_META } from '@/src/utils/constants';
-import type { Chance } from '@/src/utils/types';
+import { CHANCE_META } from '@/utils/constants';
+import type { Chance } from '@/utils/types';
 
 const LEVELS: Chance[] = ['high', 'medium', 'low'];
 

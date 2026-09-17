@@ -1,8 +1,8 @@
 'use client';
 
-import { AuthGate } from '@/src/components/auth/auth-gate';
-import { api } from '@/src/utils/api';
-import type { UniversityDetail } from '@/src/utils/types';
+import { AuthGate } from '@/components/auth/auth-gate';
+import { api } from '@/utils/api';
+import type { UniversityDetail } from '@/utils/types';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { FavoriteButton } from './favorite-button';

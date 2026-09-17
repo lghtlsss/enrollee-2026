@@ -1,6 +1,6 @@
 'use client';
 
-import { api, setToken } from '@/src/utils/api';
+import { api, setToken } from '@/utils/api';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useState, type FormEvent } from 'react';

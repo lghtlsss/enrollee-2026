@@ -1,7 +1,7 @@
 'use client';
 
-import { useFavorites } from '@/src/hooks/use-auth';
-import { pluralize } from '@/src/utils/functions';
+import { useFavorites } from '@/hooks/use-auth';
+import { pluralize } from '@/utils/functions';
 import { EmptyState, ErrorState, Skeleton } from '../ui/card';
 import { Link } from '../ui/link';
 import { UniversityCard } from '../universities/university-card';

@@ -1,5 +1,5 @@
-import { Header } from '@/src/components/header';
-import { Providers } from '@/src/components/providers/providers';
+import { Header } from '@/components/header';
+import { Providers } from '@/components/providers/providers';
 import type { Metadata, Viewport } from 'next';
 import { Geist } from 'next/font/google';
 import './globals.css';

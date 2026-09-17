@@ -1,6 +1,6 @@
 'use client';
 
-import { useFavorites, useToggleFavorite, useUser } from '@/src/hooks/use-auth';
+import { useFavorites, useToggleFavorite, useUser } from '@/hooks/use-auth';
 import { useRouter } from 'next/navigation';
 
 export const FavoriteButton = ({

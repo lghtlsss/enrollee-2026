@@ -1,13 +1,13 @@
 'use client';
 
-import { api, clearToken, getToken, setToken } from '@/src/utils/api';
+import { api, clearToken, getToken, setToken } from '@/utils/api';
 import type {
   ProfileUpdate,
   RecommendationRequest,
   ReviewCreate,
   UniversityShort,
   UpdateSubjects,
-} from '@/src/utils/types';
+} from '@/utils/types';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 export const useRegister = () =>

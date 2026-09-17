@@ -1,7 +1,7 @@
 'use client';
 
-import { api } from '@/src/utils/api';
-import { pluralize } from '@/src/utils/functions';
+import { api } from '@/utils/api';
+import { pluralize } from '@/utils/functions';
 import { useQuery } from '@tanstack/react-query';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useState, type FormEvent } from 'react';

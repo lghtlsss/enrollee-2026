@@ -1,10 +1,10 @@
 'use client';
 
-import { useLastRequest } from '@/src/hooks/use-auth';
-import { api } from '@/src/utils/api';
-import { CHANCE_META } from '@/src/utils/constants';
-import { pluralize, requestToSearchParams } from '@/src/utils/functions';
-import type { Chance, RecommendationRequest } from '@/src/utils/types';
+import { useLastRequest } from '@/hooks/use-auth';
+import { api } from '@/utils/api';
+import { CHANCE_META } from '@/utils/constants';
+import { pluralize, requestToSearchParams } from '@/utils/functions';
+import type { Chance, RecommendationRequest } from '@/utils/types';
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { EmptyState, ErrorState, Skeleton } from '../ui/card';

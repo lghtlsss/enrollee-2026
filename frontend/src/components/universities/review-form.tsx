@@ -1,9 +1,9 @@
 'use client';
 
-import { Button } from '@/src/components/ui/button';
-import { Card } from '@/src/components/ui/card';
-import { Input, Label } from '@/src/components/ui/input';
-import { useCreateReview } from '@/src/hooks/use-auth';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { Input, Label } from '@/components/ui/input';
+import { useCreateReview } from '@/hooks/use-auth';
 import { useState, type FormEvent } from 'react';
 
 export const ReviewForm = ({ universityId }: { universityId: number }) => {

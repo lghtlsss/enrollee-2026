@@ -1,4 +1,4 @@
-import type { Review } from '@/src/utils/types';
+import type { Review } from '@/utils/types';
 import { RatingBlock } from './rating-block';
 
 export const ReviewCard = ({ review }: { review: Review }) => (

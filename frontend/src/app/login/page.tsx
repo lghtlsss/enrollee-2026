@@ -1,6 +1,6 @@
-import { AuthCard } from '@/src/components/auth/auth-card';
-import { LoginForm } from '@/src/components/auth/login-form';
-import { Link } from '@/src/components/ui/link';
+import { AuthCard } from '@/components/auth/auth-card';
+import { LoginForm } from '@/components/auth/login-form';
+import { Link } from '@/components/ui/link';
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
 

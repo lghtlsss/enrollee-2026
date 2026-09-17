@@ -1,4 +1,4 @@
-import { UniversitiesList } from '@/src/components/universities/universities-list';
+import { UniversitiesList } from '@/components/universities/universities-list';
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
 

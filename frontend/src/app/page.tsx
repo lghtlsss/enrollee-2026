@@ -1,5 +1,5 @@
-import { Calculator } from '@/src/components/calculator/calculator';
-import { searchParamsToRequest } from '@/src/utils/functions';
+import { Calculator } from '@/components/calculator/calculator';
+import { searchParamsToRequest } from '@/utils/functions';
 
 const STEPS = [
   {

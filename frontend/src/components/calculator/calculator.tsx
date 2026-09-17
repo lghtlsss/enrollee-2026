@@ -6,11 +6,11 @@ import {
   useSaveProfile,
   useSaveScores,
   useUser,
-} from '@/src/hooks/use-auth';
-import { api } from '@/src/utils/api';
-import { SUBJECT_KEYS, SUBJECT_LABELS, type SubjectName } from '@/src/utils/constants';
-import { requestToSearchParams } from '@/src/utils/functions';
-import type { Profile, RecommendationRequest } from '@/src/utils/types';
+} from '@/hooks/use-auth';
+import { api } from '@/utils/api';
+import { SUBJECT_KEYS, SUBJECT_LABELS, type SubjectName } from '@/utils/constants';
+import { requestToSearchParams } from '@/utils/functions';
+import type { Profile, RecommendationRequest } from '@/utils/types';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState, type FormEvent } from 'react';

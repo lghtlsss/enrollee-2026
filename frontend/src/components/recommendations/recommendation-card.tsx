@@ -1,12 +1,12 @@
 'use client';
 
-import { ChanceBadge } from '@/src/components/chance-badge';
-import { Card } from '@/src/components/ui/card';
-import { Link } from '@/src/components/ui/link';
-import { FavoriteButton } from '@/src/components/universities/favorite-button';
-import { CHANCE_META } from '@/src/utils/constants';
-import { formatMoney } from '@/src/utils/functions';
-import type { RecommendationItem } from '@/src/utils/types';
+import { ChanceBadge } from '@/components/chance-badge';
+import { Card } from '@/components/ui/card';
+import { Link } from '@/components/ui/link';
+import { FavoriteButton } from '@/components/universities/favorite-button';
+import { CHANCE_META } from '@/utils/constants';
+import { formatMoney } from '@/utils/functions';
+import type { RecommendationItem } from '@/utils/types';
 
 const Initials = ({ name }: { name: string }) => (
   <div

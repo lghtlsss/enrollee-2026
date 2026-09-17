@@ -1,4 +1,4 @@
-import { University } from '@/src/components/universities/university';
+import { University } from '@/components/universities/university';
 import { use } from 'react';
 
 const UniversityPage = ({ params }: { params: Promise<{ slug: number }> }) => {

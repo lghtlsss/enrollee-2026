@@ -1,7 +1,7 @@
-import { RecommendationsList } from '@/src/components/recommendations/recommendations-list';
-import { EmptyState } from '@/src/components/ui/card';
-import { Link } from '@/src/components/ui/link';
-import { requestToSearchParams, searchParamsToRequest } from '@/src/utils/functions';
+import { RecommendationsList } from '@/components/recommendations/recommendations-list';
+import { EmptyState } from '@/components/ui/card';
+import { Link } from '@/components/ui/link';
+import { requestToSearchParams, searchParamsToRequest } from '@/utils/functions';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = { title: 'Рекомендации — UniVibe' };

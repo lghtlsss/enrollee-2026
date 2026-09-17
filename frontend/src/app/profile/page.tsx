@@ -1,6 +1,6 @@
-import { AuthGate } from '@/src/components/auth/auth-gate';
-import { ProfilePreferencesForm } from '@/src/components/profile/profile-preferences-form';
-import { ProfileScoresForm } from '@/src/components/profile/profile-scores-form';
+import { AuthGate } from '@/components/auth/auth-gate';
+import { ProfilePreferencesForm } from '@/components/profile/profile-preferences-form';
+import { ProfileScoresForm } from '@/components/profile/profile-scores-form';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {

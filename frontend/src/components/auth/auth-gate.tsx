@@ -1,6 +1,6 @@
 'use client';
 
-import { useUser } from '@/src/hooks/use-auth';
+import { useUser } from '@/hooks/use-auth';
 import NextLink from 'next/link';
 import type { ReactNode } from 'react';
 import { EmptyState, Skeleton } from '../ui/card';

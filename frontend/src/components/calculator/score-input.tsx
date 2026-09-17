@@ -1,8 +1,8 @@
 'use client';
 
-import { Button } from '@/src/components/ui/button';
-import { Input, Label, Select } from '@/src/components/ui/input';
-import { SUBJECTS, type SubjectName } from '@/src/utils/constants';
+import { Button } from '@/components/ui/button';
+import { Input, Label, Select } from '@/components/ui/input';
+import { SUBJECTS, type SubjectName } from '@/utils/constants';
 
 export type ScoreRow = { subject: SubjectName; score: string };
 

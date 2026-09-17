@@ -1,9 +1,9 @@
 'use client';
 
-import { Card } from '@/src/components/ui/card';
-import { Link } from '@/src/components/ui/link';
-import { formatRating } from '@/src/utils/functions';
-import type { UniversityShort } from '@/src/utils/types';
+import { Card } from '@/components/ui/card';
+import { Link } from '@/components/ui/link';
+import { formatRating } from '@/utils/functions';
+import type { UniversityShort } from '@/utils/types';
 import { FavoriteButton } from './favorite-button';
 import { RatingBlock } from './rating-block';
 

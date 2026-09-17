@@ -1,12 +1,12 @@
-import { directions, programs, reviews, universities } from '@/src/lib/mock-data';
-import { computeChance, latestAdmission } from '@/src/utils/functions';
+import { directions, programs, reviews, universities } from '@/lib/mock-data';
+import { computeChance, latestAdmission } from '@/utils/functions';
 import type {
   Chance,
   Profile,
   RecommendationItem,
   RecommendationRequest,
   User,
-} from '@/src/utils/types';
+} from '@/utils/types';
 import { NextRequest, NextResponse } from 'next/server';
 
 type StoredUser = User & { id: number; password: string };
