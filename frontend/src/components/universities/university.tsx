@@ -4,15 +4,10 @@ import { api } from '@/src/utils/api';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 
-/**
- * Vibe и ProgramShort не были в исходном наборе типов — предполагаю их форму
- * по смыслу эскиза (три цветные полоски = три качественных показателя вуза).
- * Поправьте под реальную схему API, если она отличается.
- */
 export type Vibe = {
-  energy: number; // 0–100, зелёная полоска — движ/активность кампуса
-  social: number; // 0–100, оранжевая полоска — тусовки и комьюнити
-  comfort: number; // 0–100, розовая полоска — комфорт и спокойствие
+  energy: number;
+  social: number;
+  comfort: number;
 };
 
 export type ProgramShort = {

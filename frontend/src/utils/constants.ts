@@ -1,13 +1,9 @@
 import type { Chance } from './types';
 
-// Реальный FastAPI: NEXT_PUBLIC_BACKEND_URL=http://localhost:8000
-// Без переменной используется встроенный мок с демо-данными.
 export const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL ?? '/api/mock';
 
 export const TOKEN_KEY = 'access_token';
 
-// Названия совпадают с таблицей subjects в бэкенде — именно эти строки
-// уходят ключами в RecommendationRequest.scores.
 export const SUBJECTS = [
   'Русский язык',
   'Математика',

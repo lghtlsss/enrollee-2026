@@ -46,7 +46,6 @@ export const Calculator = ({ initial }: { initial?: RecommendationRequest | null
   const [educationForm, setEducationForm] = useState<Profile['education_form']>('fullTime');
   const [error, setError] = useState<string | null>(null);
 
-  // Подставляем сохранённый профиль, если пользователь пришёл без параметров в URL.
   useEffect(() => {
     if (initial || !profile || !Object.keys(profile.scores).length) return;
     setRows(rowsFromScores(profile.scores));

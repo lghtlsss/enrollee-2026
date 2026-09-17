@@ -29,9 +29,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-6 sm:px-6 sm:py-8">
             {children}
           </main>
-          <footer className="px-4 py-6 text-center text-xs text-muted">
-            UniVibe · Подача документов — через Госуслуги, а мы помогаем выбрать
-          </footer>
         </Providers>
       </body>
     </html>

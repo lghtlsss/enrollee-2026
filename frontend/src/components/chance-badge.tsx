@@ -3,7 +3,6 @@ import type { Chance } from '@/src/utils/types';
 
 const LEVELS: Chance[] = ['high', 'medium', 'low'];
 
-// Три полосы, как на макете: активная зона яркая, остальные приглушены.
 export const ChanceBadge = ({ chance, compact = false }: { chance: Chance; compact?: boolean }) => {
   const meta = CHANCE_META[chance];
   return (

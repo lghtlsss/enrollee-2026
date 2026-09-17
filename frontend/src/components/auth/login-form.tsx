@@ -7,7 +7,6 @@ import { useState, type FormEvent } from 'react';
 import { Button } from '../ui/button';
 import { Input, Label } from '../ui/input';
 
-// Разрешаем редирект только на внутренние пути, чтобы ?next= нельзя было увести на чужой сайт.
 export const safeNext = (value: string | null) =>
   value && value.startsWith('/') && !value.startsWith('//') ? value : '/';
 
@@ -45,7 +44,14 @@ export const LoginForm = () => {
     <form onSubmit={handleSubmit} className="flex flex-col gap-4" aria-label="Вход">
       <div className="flex flex-col gap-1">
         <Label htmlFor="email">Email</Label>
-        <Input id="email" name="email" type="email" autoComplete="email" required placeholder="you@example.com" />
+        <Input
+          id="email"
+          name="email"
+          type="email"
+          autoComplete="email"
+          required
+          placeholder="you@example.com"
+        />
       </div>
       <div className="flex flex-col gap-1">
         <Label htmlFor="password">Пароль</Label>

@@ -1,6 +1,5 @@
 import type { AdmissionRecord, Chance, ProgramDetail, RecommendationRequest } from './types';
 
-// Те же пороги, что в backend/app/services/recommendations.py
 const MEDIUM_THRESHOLD = 10;
 const LOW_THRESHOLD = 25;
 
@@ -23,10 +22,6 @@ export type ProgramMatch = {
   chance: Chance | null;
 };
 
-// Для карточки сравнения выбираем среди программ вуза ту, что лучше всего
-// подходит под сохранённый запрос пользователя (совпадает направление и
-// известны баллы по всем обязательным предметам). Без запроса — просто
-// самую доступную по проходному баллу программу.
 export const bestProgramMatch = (
   programs: ProgramDetail[],
   request: RecommendationRequest | null,
@@ -84,7 +79,6 @@ export const pluralize = (n: number, forms: [string, string, string]) => {
   return forms[2];
 };
 
-// Запрос рекомендаций живёт в URL, чтобы страницу можно было обновить и переслать.
 export const requestToSearchParams = (req: RecommendationRequest) => {
   const params = new URLSearchParams();
   params.set('scores', JSON.stringify(req.scores));

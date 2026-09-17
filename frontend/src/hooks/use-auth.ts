@@ -69,7 +69,6 @@ export const useToggleFavorite = () => {
   });
 };
 
-// Последний запрос калькулятора — источник баллов для страницы сравнения у гостей.
 export const useLastRequest = () => {
   const queryClient = useQueryClient();
   const { data } = useQuery<RecommendationRequest | null>({

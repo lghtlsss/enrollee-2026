@@ -10,7 +10,7 @@ export default function RegisterPage() {
   return (
     <AuthCard
       title="Создать аккаунт"
-      subtitle="Только email и пароль. Никаких сканов документов — это к Госуслугам."
+      subtitle="Только email и пароль."
       footer={
         <>
           Уже есть аккаунт? <Link href="/login">Войти</Link>

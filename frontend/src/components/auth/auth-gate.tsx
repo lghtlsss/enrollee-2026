@@ -5,8 +5,6 @@ import NextLink from 'next/link';
 import type { ReactNode } from 'react';
 import { EmptyState, Skeleton } from '../ui/card';
 
-// Оборачивает приватные разделы: гостю показывает приглашение войти вместо редиректа,
-// чтобы страницу можно было открыть по ссылке и понять, что там будет.
 export const AuthGate = ({
   children,
   title,
