@@ -5,16 +5,28 @@ export type University = {
   rating: number;
 };
 
+export type Vibe = {
+  education: number;
+  career: number;
+  studentLife: number;
+  atmosphere: number;
+  workload: number;
+};
+
+export type Program = {
+  id: number;
+  name: string;
+  directionId: number;
+};
+
 export type UniversityDetails = {
   id: number;
   name: string;
   city: string;
   description: string;
-  passingScore: number;
-  freePlacesCount: number;
-  educationCost: number;
   rating: number;
   vibeValue: number;
+  website: string;
 };
 
 export type ExamsScore = {

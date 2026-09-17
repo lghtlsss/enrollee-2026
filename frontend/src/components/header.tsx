@@ -9,11 +9,10 @@ export const Header = () => {
     staleTime: Infinity,
     queryFn: getUser,
   });
-  console.log(data);
   return (
     <header className="flex h-20 items-center justify-between border-b-2 p-2">
       <Link href="/">
-        <p className="text-xl">Название</p>
+        <p className="text-xl">UniVibe</p>
       </Link>
       <div className="flex gap-2">
         {isPending ? (
