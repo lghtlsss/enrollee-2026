@@ -1,5 +1,3 @@
-from typing import Optional
-
 from sqlalchemy import select, func
 from sqlalchemy.orm import Session, joinedload
 
@@ -10,8 +8,8 @@ def get_programs(
     db: Session,
     skip: int = 0,
     limit: int = 20,
-    direction_id: Optional[int] = None,
-    university_id: Optional[int] = None,
+    direction_id: int | None = None,
+    university_id: int | None = None,
 ) -> tuple[list[Program], int]:
     query = select(Program)
 
@@ -28,7 +26,7 @@ def get_programs(
     return items, total
 
 
-def get_program_by_id(db: Session, program_id: int) -> Optional[Program]:
+def get_program_by_id(db: Session, program_id: int) -> Program | None:
     query = (
         select(Program)
         .where(Program.id == program_id)
