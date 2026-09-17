@@ -7,3 +7,4 @@ from .recommendations import router as recommendations_router
 from .subjects import router as subjects_router
 from .profile import router as profile_router
 from .review import router as review_router
+from .favorite import router as favorite_router
