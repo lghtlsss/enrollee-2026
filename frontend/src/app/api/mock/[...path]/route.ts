@@ -40,6 +40,8 @@ const mockReviews = (store.__mockReviews ??= new Map());
 
 const json = (data: unknown, status = 200) => NextResponse.json(data, { status });
 const error = (status: number, detail: string) => json({ detail }, status);
+const normalizeCity = (city: string) =>
+  city.toLocaleLowerCase('ru-RU').replace(/ё/g, 'е').replace(/-/g, ' ').trim().replace(/\s+/g, ' ');
 
 const tokenFor = (userId: number) => `mock-token-${userId}`;
 
@@ -389,7 +391,10 @@ async function handle(request: NextRequest, segments: string[]) {
         continue;
       }
 
-      if (body.city && university.city.toLowerCase() !== body.city.toLowerCase()) {
+      if (body.city && normalizeCity(university.city) !== normalizeCity(body.city)) {
+        continue;
+      }
+      if (body.needs_dormitory && !university.has_dormitory) {
         continue;
       }
 

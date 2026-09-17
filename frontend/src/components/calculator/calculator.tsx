@@ -8,12 +8,12 @@ import {
   useUser,
 } from '@/src/hooks/use-auth';
 import { api } from '@/src/utils/api';
-import { type SubjectName } from '@/src/utils/constants';
+import { SUBJECT_KEYS, SUBJECT_LABELS, type SubjectName } from '@/src/utils/constants';
 import { requestToSearchParams } from '@/src/utils/functions';
 import type { Profile, RecommendationRequest } from '@/src/utils/types';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
-import { useEffect, useRef, useState, type FormEvent } from 'react';
+import { useEffect, useState, type FormEvent } from 'react';
 import { Button } from '../ui/button';
 import { Card } from '../ui/card';
 import { Input, Label, Select } from '../ui/input';
@@ -27,7 +27,7 @@ const DEFAULT_ROWS: ScoreRow[] = [
 
 const rowsFromScores = (scores: Record<string, number>): ScoreRow[] => {
   const rows = Object.entries(scores).map(([subject, score]) => ({
-    subject: subject as SubjectName,
+    subject: SUBJECT_LABELS[subject] ?? (subject as SubjectName),
     score: String(score),
   }));
   return rows.length ? rows : DEFAULT_ROWS;
@@ -35,7 +35,7 @@ const rowsFromScores = (scores: Record<string, number>): ScoreRow[] => {
 
 const rowsFromProfile = (subjects: Profile['subjects']): ScoreRow[] => {
   const rows = subjects.map(subject => ({
-    subject: subject.subject_name as SubjectName,
+    subject: SUBJECT_LABELS[subject.subject_name] ?? (subject.subject_name as SubjectName),
     score: String(subject.score),
   }));
   return rows.length ? rows : DEFAULT_ROWS;
@@ -62,32 +62,23 @@ export const Calculator = ({ initial }: { initial?: RecommendationRequest | null
   );
   const [city, setCity] = useState(initial?.city ?? '');
   const [budgetOnly, setBudgetOnly] = useState(initial?.budget_only ?? true);
+  const [needsDormitory, setNeedsDormitory] = useState(initial?.needs_dormitory ?? false);
   const [error, setError] = useState<string | null>(null);
 
-  const profileInitialized = useRef(false);
-
   useEffect(() => {
-    if (initial || !profile || profileInitialized.current) return;
-
-    profileInitialized.current = true;
-
-    const savedSubjects = profile.subjects ?? [];
-
-    setRows(savedSubjects.length ? rowsFromProfile(savedSubjects) : DEFAULT_ROWS);
-
+    if (initial || !profile) return;
+    const subjects = profile.subjects ?? [];
+    if (subjects.length) {
+      setRows(rowsFromProfile(subjects));
+    }
+    const direction = directions?.find(item => item.name === profile.field_of_study);
+    setDirectionId(direction ? String(direction.id) : '');
     setCity(profile.city ?? '');
     setBudgetOnly(profile.wants_budget);
-  }, [profile, initial]);
-
-  useEffect(() => {
-    if (initial || !profile || !directions?.length) return;
-
-    const direction = directions.find(item => item.name === profile.field_of_study);
-
-    setDirectionId(direction ? String(direction.id) : '');
+    setNeedsDormitory(profile.needs_dormitory);
   }, [directions, profile, initial]);
 
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const scores: Record<string, number> = {};
     for (const row of rows) {
@@ -96,7 +87,7 @@ export const Calculator = ({ initial }: { initial?: RecommendationRequest | null
         setError(`Введите балл от 0 до 100 по предмету «${row.subject}»`);
         return;
       }
-      scores[row.subject] = value;
+      scores[SUBJECT_KEYS[row.subject]] = value;
     }
     setError(null);
 
@@ -105,14 +96,17 @@ export const Calculator = ({ initial }: { initial?: RecommendationRequest | null
       direction_id: directionId ? Number(directionId) : null,
       city: city.trim() || null,
       budget_only: budgetOnly,
+      needs_dormitory: needsDormitory,
     };
     setLastRequest(request);
     if (isAuthenticated) {
       const selectedDirection = directions?.find(item => item.id === request.direction_id);
       const subjectsByName = new Map(subjects?.map(subject => [subject.name, subject.id]));
       const profileSubjects = rows.flatMap(row => {
-        const subjectId = subjectsByName.get(row.subject);
-        return subjectId === undefined ? [] : [{ subject_id: subjectId, score: Number(row.score) }];
+        const subjectId = subjectsByName.get(SUBJECT_KEYS[row.subject]);
+        return subjectId === undefined
+          ? []
+          : [{ subject_id: subjectId, score: Number(row.score) }];
       });
 
       if (profileSubjects.length !== rows.length) {
@@ -120,25 +114,15 @@ export const Calculator = ({ initial }: { initial?: RecommendationRequest | null
         return;
       }
 
-      try {
-        await Promise.all([
-          saveProfile.mutateAsync({
-            city: request.city,
-            field_of_study: selectedDirection?.name ?? null,
-            wants_budget: request.budget_only,
-          }),
-          saveScores.mutateAsync({
-            subjects: profileSubjects,
-          }),
-        ]);
-      } catch (mutationError) {
-        setError(
-          mutationError instanceof Error
-            ? mutationError.message
-            : 'Не удалось сохранить профиль.',
-        );
-        return;
-      }
+      saveProfile.mutate({
+        city: request.city,
+        field_of_study: selectedDirection?.name ?? null,
+        wants_budget: request.budget_only,
+        needs_dormitory: request.needs_dormitory,
+      });
+      saveScores.mutate({
+        subjects: profileSubjects,
+      });
     }
     router.push(`/recommendations?${requestToSearchParams(request)}`);
   };
@@ -206,6 +190,32 @@ export const Calculator = ({ initial }: { initial?: RecommendationRequest | null
               ))}
             </div>
           </div>
+          <div className="flex flex-col gap-1">
+            <Label>Общежитие</Label>
+            <div
+              className="grid grid-cols-2 gap-1 rounded-xl bg-lavender-soft p-1"
+              role="radiogroup"
+              aria-label="Общежитие">
+              {[
+                { value: false, label: 'Не нужно' },
+                { value: true, label: 'Нужно' },
+              ].map(option => (
+                <button
+                  key={String(option.value)}
+                  type="button"
+                  role="radio"
+                  aria-checked={needsDormitory === option.value}
+                  onClick={() => setNeedsDormitory(option.value)}
+                  className={`rounded-lg px-3 py-2 text-sm font-semibold transition ${
+                    needsDormitory === option.value
+                      ? 'bg-navy text-white'
+                      : 'text-navy hover:bg-lavender'
+                  }`}>
+                  {option.label}
+                </button>
+              ))}
+            </div>
+          </div>
         </fieldset>
 
         {error && (
@@ -220,11 +230,8 @@ export const Calculator = ({ initial }: { initial?: RecommendationRequest | null
               ? 'Профиль сохранится автоматически.'
               : 'Войдите, чтобы сохранить баллы и избранное.'}
           </p>
-          <Button
-            type="submit"
-            className="sm:min-w-56"
-            disabled={saveProfile.isPending || saveScores.isPending}>
-            {saveProfile.isPending || saveScores.isPending ? 'Сохраняем…' : 'Подобрать вузы'}
+          <Button type="submit" className="sm:min-w-56">
+            Подобрать вузы
           </Button>
         </div>
       </form>

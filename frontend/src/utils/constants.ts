@@ -1,6 +1,7 @@
 import type { Chance } from './types';
 
-export const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL ?? '/api/mock';
+export const BACKEND_URL =
+  process.env.NEXT_PUBLIC_BACKEND_URL ?? '/api/mock';
 
 export const TOKEN_KEY = 'access_token';
 
@@ -19,6 +20,24 @@ export const SUBJECTS = [
 ] as const;
 
 export type SubjectName = (typeof SUBJECTS)[number];
+
+export const SUBJECT_KEYS: Record<SubjectName, string> = {
+  'Русский язык': 'russian',
+  Математика: 'math',
+  Информатика: 'informatics',
+  Физика: 'physics',
+  Химия: 'chemistry',
+  Биология: 'biology',
+  История: 'history',
+  Обществознание: 'social',
+  География: 'geography',
+  Литература: 'literature',
+  'Иностранный язык': 'english',
+};
+
+export const SUBJECT_LABELS: Record<string, SubjectName> = Object.fromEntries(
+  Object.entries(SUBJECT_KEYS).map(([label, key]) => [key, label]),
+) as Record<string, SubjectName>;
 
 export const EDUCATION_FORMS = [
   { value: 'fullTime', label: 'Очная' },
@@ -72,4 +91,5 @@ export const NAV_ITEMS = [
   { href: '/', label: 'Подбор' },
   { href: '/universities', label: 'Вузы' },
   { href: '/favorites', label: 'Избранное' },
+  { href: '/deadlines', label: 'Дедлайны' },
 ] as const;

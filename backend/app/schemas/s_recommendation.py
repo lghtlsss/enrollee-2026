@@ -11,6 +11,7 @@ class RecommendationRequest(BaseModel):
     direction_id: int | None = None
     city: str | None = None
     budget_only: bool = False
+    needs_dormitory: bool = False
 
 class RecommendationItem(BaseModel):
     university_id: int

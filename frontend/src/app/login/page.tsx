@@ -10,7 +10,7 @@ export default function LoginPage() {
   return (
     <AuthCard
       title="С возвращением"
-      subtitle="Войдите, чтобы видеть сохранённые баллы, избранное и сравнение."
+      subtitle="Войдите, чтобы видеть сохранённые баллы и избранное."
       footer={
         <>
           Нет аккаунта? <Link href="/register">Зарегистрироваться</Link>

@@ -8,3 +8,4 @@ from .m_vibe import UniversityVibe
 from .m_user import User
 from .m_user_subjects import UserSubject
 from .m_review import Review
+from .m_favorite import Favorite

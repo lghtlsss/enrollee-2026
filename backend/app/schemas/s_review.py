@@ -1,17 +1,15 @@
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, Field
 from datetime import datetime
 
 
 class SReviewCreate(BaseModel):
     uni_id: int
-    rating: float = Field(ge=1, le=5)
+    rating: float = Field(ge=1, le=5, multiple_of=0.5)
     text: str
     tags: list[str] = Field(default_factory=list)
 
 
 class SReviewResponse(BaseModel):
-    model_config = ConfigDict(from_attributes=True)
-
     id: int
     author: str
     text: str
