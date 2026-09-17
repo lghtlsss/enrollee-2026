@@ -29,7 +29,9 @@ class User(Base):
         nullable=True
     )
 
-    fee: Mapped[bool] = mapped_column(Boolean, default=True)
+    wants_budget: Mapped[bool] = mapped_column(Boolean, default=True)
+
+    needs_dormitory: Mapped[bool] = mapped_column(Boolean, default=False)
 
     subjects: Mapped[list["UserSubject"]] = relationship(
         back_populates="user"

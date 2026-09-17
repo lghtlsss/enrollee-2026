@@ -6,3 +6,4 @@ from .s_program import ProgramShort, SubjectResponse, UniversityBrief, ProgramDe
 from .s_university import UniversityShort, UniversityDetail, UniversityListResponse
 from .s_recommendation import RecommendationResponse, RecommendationResponse
 from .s_subject import SSubjectResponse
+from .s_profile import SProfileResponse, SSubjectsScoresResponse, SProfileUpdate
