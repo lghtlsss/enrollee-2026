@@ -22,7 +22,9 @@ export const RecommendationsList = ({ request }: { request: RecommendationReques
   const [filter, setFilter] = useState<Chance | 'all'>('all');
   const { setLastRequest } = useLastRequest();
 
-  useEffect(() => setLastRequest(request), [request, setLastRequest]);
+  useEffect(() => {
+    setLastRequest(request);
+  }, [request, setLastRequest]);
 
   const { data, isPending, error } = useQuery({
     queryKey: ['recommendations', request],

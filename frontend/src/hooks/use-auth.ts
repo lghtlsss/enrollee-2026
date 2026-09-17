@@ -3,6 +3,7 @@
 import { api, clearToken, getToken } from '@/src/utils/api';
 import type { Profile, RecommendationRequest, UniversityShort } from '@/src/utils/types';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useCallback } from 'react';
 
 export const useUser = () => {
   const query = useQuery({
@@ -60,9 +61,14 @@ export const useLastRequest = () => {
     staleTime: Infinity,
     initialData: null,
   });
+
+  const setLastRequest = useCallback(
+    (request: RecommendationRequest) => queryClient.setQueryData(['last-request'], request),
+    [queryClient],
+  );
+
   return {
     lastRequest: data,
-    setLastRequest: (request: RecommendationRequest) =>
-      queryClient.setQueryData(['last-request'], request),
+    setLastRequest,
   };
 };
