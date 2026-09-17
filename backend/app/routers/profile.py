@@ -54,7 +54,24 @@ def get_profile(current_user=Depends(get_current_user)):
     """
     Возвращает профиль абитуриента(то есть не данные пользователя, а именно то что важно при расчете вузов)
     """
-    return current_user
+    return {
+        "id": current_user.id,
+        "email": current_user.email,
+        "name": current_user.name,
+        "surname": current_user.surname,
+        "city": current_user.city,
+        "field_of_study": current_user.field_of_study,
+        "wants_budget": current_user.wants_budget,
+        "needs_dormitory": current_user.needs_dormitory,
+        "subjects": [
+            {
+                "subject_id": link.subject_id,
+                "subject_name": link.subject.name,
+                "score": link.score,
+            }
+            for link in current_user.subjects
+        ],
+    }
 
 
 @router.get("/scores", response_model=SSubjectsAllScoresResponse)
