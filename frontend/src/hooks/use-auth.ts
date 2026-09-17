@@ -4,6 +4,7 @@ import { api, clearToken, getToken, setToken } from '@/src/utils/api';
 import type {
   ProfileUpdate,
   RecommendationRequest,
+  ReviewCreate,
   UniversityShort,
   UpdateSubjects,
 } from '@/src/utils/types';
@@ -78,6 +79,23 @@ export const useToggleFavorite = () => {
     mutationFn: ({ id, isFavorite }: { id: number; isFavorite: boolean }) =>
       isFavorite ? api.favorites.remove(id) : api.favorites.add(id),
     onSuccess: list => queryClient.setQueryData<UniversityShort[]>(['favorites'], list),
+  });
+};
+
+export const useCreateReview = (universityId: number) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (data: Omit<ReviewCreate, 'uni_id'>) =>
+      api.reviews.create({
+        ...data,
+        uni_id: universityId,
+      }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['university-reviews', universityId],
+      });
+    },
   });
 };
 

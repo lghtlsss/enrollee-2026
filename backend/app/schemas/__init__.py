@@ -7,3 +7,4 @@ from .s_university import UniversityShort, UniversityDetail, UniversityListRespo
 from .s_recommendation import RecommendationResponse
 from .s_subject import SSubjectResponse
 from .s_profile import SProfileResponse, SSubjectsAllScoresResponse, SProfileUpdate, SUpdateSubjectsAndScores, SSubjectScoreInput, SSubjectScoreResponse, SFullUserResponse
+from .s_review import SReviewCreate, SReviewResponse

@@ -1,11 +1,13 @@
 'use client';
 
+import { AuthGate } from '@/src/components/auth/auth-gate';
 import { api } from '@/src/utils/api';
 import type { UniversityDetail } from '@/src/utils/types';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { FavoriteButton } from './favorite-button';
 import { ReviewCard } from './review-card';
+import { ReviewForm } from './review-form';
 
 const SECTIONS = ['Обзор', 'Программы', 'Кампус', 'Отзывы'] as const;
 type Section = (typeof SECTIONS)[number];
@@ -142,20 +144,30 @@ export const University = ({ universityId }: { universityId: number }) => {
           <p className="text-sm text-[#5B6270]">Раздел о кампусе появится здесь.</p>
         )}
 
-        {section === 'Отзывы' &&
-          (reviewsQuery.isPending ? (
-            <p className="text-sm text-[#5B6270]">Загружаем отзывы…</p>
-          ) : reviewsQuery.error ? (
-            <p className="text-sm text-[#5B6270]">Не удалось загрузить отзывы.</p>
-          ) : reviewsQuery.data?.length ? (
-            <div className="flex flex-col gap-3">
-              {reviewsQuery.data.map(review => (
-                <ReviewCard key={review.id} review={review} />
-              ))}
-            </div>
-          ) : (
-            <p className="text-sm text-[#5B6270]">Отзывов пока нет.</p>
-          ))}
+        {section === 'Отзывы' && (
+          <div className="flex flex-col gap-6">
+            <AuthGate
+              title="Войдите, чтобы оставить отзыв"
+              description="Публиковать отзывы могут только авторизованные пользователи."
+              next={`/universities/${university.id}`}>
+              <ReviewForm universityId={university.id} />
+            </AuthGate>
+
+            {reviewsQuery.isPending ? (
+              <p className="text-sm text-[#5B6270]">Загружаем отзывы…</p>
+            ) : reviewsQuery.error ? (
+              <p className="text-sm text-[#5B6270]">Не удалось загрузить отзывы.</p>
+            ) : reviewsQuery.data?.length ? (
+              <div className="flex flex-col gap-3">
+                {reviewsQuery.data.map(review => (
+                  <ReviewCard key={review.id} review={review} />
+                ))}
+              </div>
+            ) : (
+              <p className="text-sm text-[#5B6270]">Отзывов пока нет.</p>
+            )}
+          </div>
+        )}
       </main>
     </div>
   );

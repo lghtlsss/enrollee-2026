@@ -88,6 +88,13 @@ export type Review = {
   created_at: string;
 };
 
+export type ReviewCreate = {
+  uni_id: number;
+  rating: number;
+  text: string;
+  tags: string[];
+};
+
 export type RecommendationRequest = {
   scores: Record<string, number>;
   direction_id?: number | null;

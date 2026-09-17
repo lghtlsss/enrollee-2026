@@ -6,6 +6,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database import Base
 
 class University(Base):
+    """Вузы"""
     __tablename__ = "universities"
 
     id: Mapped[int] = mapped_column(primary_key=True)
@@ -26,4 +27,8 @@ class University(Base):
     )
     vibe: Mapped["UniversityVibe | None"] = relationship(
         back_populates="university", uselist=False, cascade="all, delete-orphan"
+    )
+      reviews: Mapped[list["Review"]] = relationship(
+        "Review",
+        back_populates="university", cascade="all, delete-orphan"
     )

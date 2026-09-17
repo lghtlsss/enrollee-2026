@@ -4,18 +4,19 @@ import type {
   Direction,
   Paginated,
   Profile,
+  ProfileUpdate,
   ProgramDetail,
   ProgramShort,
   RecommendationItem,
   RecommendationRequest,
   Review,
-  ProfileUpdate,
+  ReviewCreate,
   SubjectCatalogItem,
   SubjectsScores,
-  UpdateSubjects,
   Token,
   UniversityDetail,
   UniversityShort,
+  UpdateSubjects,
   User,
 } from './types';
 
@@ -99,12 +100,19 @@ export const api = {
     list: (params: { skip?: number; limit?: number; city?: string; search?: string }) =>
       request<Paginated<UniversityShort>>(`/universities${query(params)}`),
     get: (id: number) => request<UniversityDetail>(`/universities/${id}`),
-    reviews: (id: number) => request<Review[]>(`/universities/${id}/reviews`),
+    reviews: (id: number) => request<Review[]>(`/reviews/${id}`),
   },
   programs: {
     list: (params: { university_id?: number; direction_id?: number; limit?: number }) =>
       request<Paginated<ProgramShort>>(`/programs${query({ limit: 100, ...params })}`),
     get: (id: number) => request<ProgramDetail>(`/programs/${id}`),
+  },
+  reviews: {
+    create: (data: ReviewCreate) =>
+      request<Review>('/reviews/create_review', {
+        method: 'POST',
+        body: JSON.stringify(data),
+      }),
   },
   recommendations: (data: RecommendationRequest) =>
     request<Paginated<RecommendationItem>>('/recommendations', {
