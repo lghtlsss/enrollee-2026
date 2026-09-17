@@ -8,6 +8,7 @@ import { useState } from 'react';
 import { FavoriteButton } from './favorite-button';
 import { ReviewCard } from './review-card';
 import { ReviewForm } from './review-form';
+import { VibeBars } from './vibe-bars';
 
 const SECTIONS = ['Обзор', 'Программы', 'Кампус', 'Отзывы'] as const;
 type Section = (typeof SECTIONS)[number];
@@ -116,13 +117,7 @@ export const University = ({ universityId }: { universityId: number }) => {
               )}
             </div>
 
-            {vibe && (
-              <div className="flex w-full flex-col gap-2 sm:w-40">
-                <VibeBar label="Образование" value={vibe.education ?? 0} color="#8FB996" />
-                <VibeBar label="Карьера" value={vibe.career ?? 0} color="#E8935B" />
-                <VibeBar label="Атмосфера" value={vibe.atmosphere ?? 0} color="#E6968C" />
-              </div>
-            )}
+            {vibe && <VibeBars vibe={vibe} />}
           </div>
         )}
 
@@ -143,13 +138,13 @@ export const University = ({ universityId }: { universityId: number }) => {
         {section === 'Кампус' && (
           <div className="grid gap-3 sm:grid-cols-2">
             <div className="rounded-xl border border-[#E4E1D8] bg-white p-4">
-              <p className="text-xs uppercase tracking-wide text-[#8B90A0]">Общежитие</p>
+              <p className="text-xs tracking-wide text-[#8B90A0] uppercase">Общежитие</p>
               <p className="mt-2 text-sm font-semibold text-[#1F2430]">
                 {university.has_dormitory ? 'Есть' : 'Нет данных о наличии'}
               </p>
             </div>
             <div className="rounded-xl border border-[#E4E1D8] bg-white p-4">
-              <p className="text-xs uppercase tracking-wide text-[#8B90A0]">Инфраструктура</p>
+              <p className="text-xs tracking-wide text-[#8B90A0] uppercase">Инфраструктура</p>
               <p className="mt-2 text-sm text-[#5B6270]">
                 Подробная информация о кампусе пока не добавлена.
               </p>
@@ -185,15 +180,3 @@ export const University = ({ universityId }: { universityId: number }) => {
     </div>
   );
 };
-
-const VibeBar = ({ label, value, color }: { label: string; value: number; color: string }) => (
-  <div>
-    <div className="mb-1 flex justify-between text-xs text-[#8B90A0]">
-      <span>{label}</span>
-      <span>{value}</span>
-    </div>
-    <div className="h-2 w-full overflow-hidden rounded-full bg-[#EEF0F6]">
-      <div className="h-full rounded-full" style={{ width: `${value}%`, backgroundColor: color }} />
-    </div>
-  </div>
-);
