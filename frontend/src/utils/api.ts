@@ -99,7 +99,7 @@ export const api = {
     list: (params: { skip?: number; limit?: number; city?: string; search?: string }) =>
       request<Paginated<UniversityShort>>(`/universities${query(params)}`),
     get: (id: number) => request<UniversityDetail>(`/universities/${id}`),
-    reviews: (id: number) => request<Review[]>(`/universities/${id}/reviews`),
+    reviews: (id: number) => request<Review[]>(`/reviews/${id}`),
   },
   programs: {
     list: (params: { university_id?: number; direction_id?: number; limit?: number }) =>

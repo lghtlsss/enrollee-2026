@@ -36,3 +36,7 @@ class User(Base):
     subjects: Mapped[list["UserSubject"]] = relationship(
         back_populates="user", cascade="all, delete-orphan"
     )
+
+    reviews: Mapped[list["Review"]] = relationship(
+        back_populates="user", cascade="all, delete-orphan"
+    )

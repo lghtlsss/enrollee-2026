@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.routers import (
     universities_router, directions_router, programs_router, recommendations_router,
-    user_router, auth_router, subjects_router, profile_router)
+    user_router, auth_router, subjects_router, profile_router, review_router)
 
 app = FastAPI(title="Enrollee-2026")
 
@@ -23,6 +23,7 @@ app.include_router(programs_router)
 app.include_router(recommendations_router)
 app.include_router(subjects_router)
 app.include_router(profile_router)
+app.include_router(review_router)
 
 
 @app.get("/")

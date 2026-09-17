@@ -29,3 +29,7 @@ class University(Base):
     vibe: Mapped[Optional["UniversityVibe"]] = relationship(
         back_populates="university", uselist=False, cascade="all, delete-orphan"
     )
+    reviews: Mapped[list["Review"]] = relationship(
+        "Review",
+        back_populates="university", cascade="all, delete-orphan"
+    )

@@ -7,3 +7,4 @@ from .m_program import Program
 from .m_program_subject import ProgramSubject
 from .m_admission import AdmissionRecord
 from .m_vibe import UniversityVibe
+from .m_review import Review
