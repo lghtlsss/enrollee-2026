@@ -11,7 +11,7 @@ router = APIRouter(prefix="/users", tags=["Users"])
 @router.get("/me", response_model=SUserResponse)
 def get_me(current_user=Depends(get_current_user)):
     """
-    Get the current user's information.
+    Получить информацию о текущем пользователе.
     """
     return current_user
 
@@ -19,7 +19,7 @@ def get_me(current_user=Depends(get_current_user)):
 @router.delete("/me")
 def delete_me(current_user=Depends(get_current_user), db: Session = Depends(get_db)):
     """
-    Delete the current user's account.
+    Удалить аккаунт текущего пользователя.
     """
     db.delete(current_user)
     db.commit()
@@ -29,7 +29,7 @@ def delete_me(current_user=Depends(get_current_user), db: Session = Depends(get_
 @router.patch("/me", response_model=SUserResponse)
 def update_me(data: SUserUpdate, current_user=Depends(get_current_user), db: Session = Depends(get_db)):
     """
-    Update the current user's information.
+    Обновить информацию о текущем пользователе.
     """
     for field, value in data.model_dump(exclude_unset=True).items():
         setattr(current_user, field, value)

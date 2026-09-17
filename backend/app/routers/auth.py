@@ -35,7 +35,11 @@ def create_access_token(user_id: int) -> str:
 @router.post('/register', response_model=SUserResponse)
 def register(user: SUserCreate, db=Depends(get_db)):
     """
-    Register a new user.
+    Регистрирует нового пользователя в системе.
+    Проверяет, существует ли уже пользователь с указанным email.
+    Если пользователь существует, возвращает ошибку 400.
+    Если нет, создает нового пользователя с хэшированным паролем и сохраняет его в базе данных.
+    Возвращает данные нового пользователя.
     """
     user_exists = db.execute(select(User).where(User.email == user.email)).scalar_one_or_none()
     if user_exists:
@@ -57,7 +61,7 @@ def register(user: SUserCreate, db=Depends(get_db)):
 @router.post('/login')
 def login(credentials: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
     """
-    Login a user.
+    Вход пользователя в систему. Проверяет, существует ли пользователь с указанным email и совпадает ли пароль.
     """
     user = db.execute(select(User).where(User.email == credentials.username)).scalar_one_or_none()
     if not user or not verify_password(credentials.password, user.hashed_password):

@@ -16,12 +16,18 @@ def list_programs(
     university_id: int | None = Query(None),
     db: Session = Depends(get_db),
 ):
+    """
+    Возвращает список программ обучения с возможностью фильтрации по направлению и университету, а также пагинацией.
+    """
     items, total = programs_service.get_programs(db, skip, limit, direction_id, university_id)
     return ProgramListResponse(total=total, items=items)
 
 
 @router.get("/{program_id}", response_model=ProgramDetail)
 def get_program(program_id: int, db: Session = Depends(get_db)):
+    """
+    Возвращает информацию о конкретной программе обучения.
+    """
     program = programs_service.get_program_by_id(db, program_id)
     if program is None:
         raise HTTPException(status_code=404, detail="Program not found")

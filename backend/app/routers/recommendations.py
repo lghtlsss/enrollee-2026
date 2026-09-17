@@ -10,5 +10,8 @@ router = APIRouter(prefix="/recommendations", tags=["Recommendations"])
 
 @router.post("", response_model=RecommendationResponse)
 def get_recommendations(request: RecommendationRequest, db: Session = Depends(get_db)):
+    """
+    Получает рекомендации по программам обучения на основе профиля абитуриента.
+    """
     items, total = recommendations_service.get_recommendations(db, request)
     return RecommendationResponse(total=total, items=items)

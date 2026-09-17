@@ -10,4 +10,7 @@ router = APIRouter(prefix="/directions", tags=["Directions"])
 
 @router.get("", response_model=list[DirectionResponse])
 def list_directions(db: Session = Depends(get_db)):
+    """
+    Возвращает список всех направлений обучения.
+    """
     return directions_service.get_directions(db)

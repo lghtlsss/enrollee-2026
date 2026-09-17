@@ -17,12 +17,14 @@ def list_universities(
     search: str | None = Query(None),
     db: Session = Depends(get_db),
 ):
+    """Возвращает список университетов с возможностью фильтрации и пагинацией."""
     items, total = universities_service.get_universities(db, skip, limit, city, search)
     return UniversityListResponse(total=total, items=items)
 
 
 @router.get("/{university_id}", response_model=UniversityDetail)
 def get_university(university_id: int, db: Session = Depends(get_db)):
+    """Возвращает информацию о конкретном университете(по ID)."""
     university = universities_service.get_university_by_id(db, university_id)
     if university is None:
         raise HTTPException(status_code=404, detail="University not found")
@@ -30,6 +32,7 @@ def get_university(university_id: int, db: Session = Depends(get_db)):
 
 @router.get("/{university_id}/vibe", response_model=UniversityVibeResponse)
 def get_university_vibe(university_id: int, db: Session = Depends(get_db)):
+    """Возвращает информацию о vibe :) университета."""
     university = universities_service.get_university_vibe(db, university_id)
     if university is None:
         raise HTTPException(status_code=404, detail="University not found")
