@@ -4,7 +4,7 @@ import { api, setToken } from '@/utils/api';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useState, type FormEvent } from 'react';
-import { Button } from '../ui/button';
+import { Button } from '../ui/Button';
 import { Input, Label } from '../ui/input';
 import { safeNext } from './login-form';
 

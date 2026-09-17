@@ -5,7 +5,7 @@ import { pluralize } from '@/utils/functions';
 import { useQuery } from '@tanstack/react-query';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useState, type FormEvent } from 'react';
-import { Button } from '../ui/button';
+import { Button } from '../ui/Button';
 import { EmptyState, ErrorState, Skeleton } from '../ui/card';
 import { Input } from '../ui/input';
 import { UniversityCard } from './university-card';

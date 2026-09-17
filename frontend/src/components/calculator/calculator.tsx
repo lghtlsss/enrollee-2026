@@ -14,7 +14,7 @@ import type { Profile, RecommendationRequest } from '@/utils/types';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState, type FormEvent } from 'react';
-import { Button } from '../ui/button';
+import { Button } from '../ui/Button';
 import { Card } from '../ui/card';
 import { Input, Label, Select } from '../ui/input';
 import { ScoreInput, type ScoreRow } from './score-input';

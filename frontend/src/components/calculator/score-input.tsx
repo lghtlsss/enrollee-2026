@@ -1,6 +1,6 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { Input, Label, Select } from '@/components/ui/input';
 import { SUBJECTS, type SubjectName } from '@/utils/constants';
 
