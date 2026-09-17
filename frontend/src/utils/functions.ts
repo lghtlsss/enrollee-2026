@@ -1,4 +1,4 @@
-import type { AdmissionRecord, Chance, RecommendationRequest } from './types';
+import type { AdmissionRecord, Chance, ProgramDetail, RecommendationRequest } from './types';
 
 // Те же пороги, что в backend/app/services/recommendations.py
 const MEDIUM_THRESHOLD = 10;
@@ -16,10 +16,62 @@ export const computeChance = (userTotal: number, passingScore: number | null): C
 export const latestAdmission = (records: AdmissionRecord[]): AdmissionRecord | null =>
   records.length ? records.reduce((a, b) => (b.year > a.year ? b : a)) : null;
 
+export type ProgramMatch = {
+  program: ProgramDetail;
+  admission: AdmissionRecord;
+  userTotal: number | null;
+  chance: Chance | null;
+};
+
+// Для карточки сравнения выбираем среди программ вуза ту, что лучше всего
+// подходит под сохранённый запрос пользователя (совпадает направление и
+// известны баллы по всем обязательным предметам). Без запроса — просто
+// самую доступную по проходному баллу программу.
+export const bestProgramMatch = (
+  programs: ProgramDetail[],
+  request: RecommendationRequest | null,
+): ProgramMatch | null => {
+  if (!programs.length) return null;
+
+  const candidates = request?.direction_id
+    ? programs.filter(p => p.direction.id === request.direction_id)
+    : programs;
+  const pool = candidates.length ? candidates : programs;
+
+  const matches: ProgramMatch[] = pool
+    .map(program => {
+      const admission = latestAdmission(program.admission_records);
+      if (!admission) return null;
+      const required = program.subjects.filter(s => s.is_required).map(s => s.name);
+      const known = request && required.every(name => name in request.scores);
+      const userTotal = known
+        ? required.reduce((sum, name) => sum + (request as RecommendationRequest).scores[name], 0)
+        : null;
+      const chance = userTotal === null ? null : computeChance(userTotal, admission.passing_score);
+      return { program, admission, userTotal, chance };
+    })
+    .filter((m): m is ProgramMatch => m !== null);
+
+  if (!matches.length) return null;
+
+  const chanceOrder: Record<Chance, number> = { high: 0, medium: 1, low: 2, unknown: 3 };
+  matches.sort((a, b) => {
+    if (a.chance && b.chance) return chanceOrder[a.chance] - chanceOrder[b.chance];
+    if (a.chance) return -1;
+    if (b.chance) return 1;
+    return (a.admission.passing_score ?? 999) - (b.admission.passing_score ?? 999);
+  });
+  return matches[0];
+};
+
 export const formatMoney = (value: number | null | undefined) =>
   value === null || value === undefined
     ? '—'
-    : new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB', maximumFractionDigits: 0 }).format(value);
+    : new Intl.NumberFormat('ru-RU', {
+        style: 'currency',
+        currency: 'RUB',
+        maximumFractionDigits: 0,
+      }).format(value);
 
 export const formatRating = (value: number | null | undefined) =>
   value === null || value === undefined ? '—' : value.toFixed(1);

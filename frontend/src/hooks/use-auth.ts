@@ -1,9 +1,26 @@
 'use client';
 
-import { api, clearToken, getToken } from '@/src/utils/api';
+import { api, clearToken, getToken, setToken } from '@/src/utils/api';
 import type { Profile, RecommendationRequest, UniversityShort } from '@/src/utils/types';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useCallback } from 'react';
+
+export const useRegister = () =>
+  useMutation({
+    mutationFn: (data: { name: string; surname: string; email: string; password: string }) =>
+      api.auth.register(data),
+  });
+
+export const useLogin = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (data: { email: string; password: string }) => {
+      const token = await api.auth.login(data);
+      setToken(token.access_token);
+      return api.auth.me();
+    },
+    onSuccess: user => queryClient.setQueryData(['user'], user),
+  });
+};
 
 export const useUser = () => {
   const query = useQuery({
@@ -61,14 +78,9 @@ export const useLastRequest = () => {
     staleTime: Infinity,
     initialData: null,
   });
-
-  const setLastRequest = useCallback(
-    (request: RecommendationRequest) => queryClient.setQueryData(['last-request'], request),
-    [queryClient],
-  );
-
   return {
     lastRequest: data,
-    setLastRequest,
+    setLastRequest: (request: RecommendationRequest) =>
+      queryClient.setQueryData(['last-request'], request),
   };
 };
