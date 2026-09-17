@@ -87,4 +87,12 @@ def update_subjects(data: SUpdateSubjectsAndScores, current_user=Depends(get_cur
 
     db.commit()
     db.refresh(current_user)
-    return build_profile_response(current_user)
+    return {"subjects": [
+        {
+            "subject_id": link.subject_id,
+            "subject_name": link.subject.name,
+            "score": link.score,
+        }
+        for link in current_user.subjects
+    ],
+    }
