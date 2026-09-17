@@ -46,9 +46,7 @@ async function request<T>(path: string, init: RequestInit = {}): Promise<T> {
     try {
       const body = await response.json();
       if (typeof body?.detail === 'string') detail = body.detail;
-    } catch {
-      // тело не JSON — оставляем statusText
-    }
+    } catch {}
     throw new RequestError(response.status, detail);
   }
 
@@ -69,7 +67,6 @@ export const api = {
   auth: {
     register: (data: { name: string; surname: string; email: string; password: string }) =>
       request<User>('/auth/register', { method: 'POST', body: JSON.stringify(data) }),
-    // FastAPI OAuth2PasswordRequestForm ждёт form-urlencoded с полями username/password
     login: (data: { email: string; password: string }) =>
       request<Token>('/auth/login', {
         method: 'POST',
@@ -79,7 +76,8 @@ export const api = {
   },
   profile: {
     get: () => request<Profile>('/profile'),
-    update: (data: Profile) => request<Profile>('/profile', { method: 'PUT', body: JSON.stringify(data) }),
+    update: (data: Profile) =>
+      request<Profile>('/profile', { method: 'PUT', body: JSON.stringify(data) }),
   },
   directions: {
     list: () => request<Direction[]>('/directions'),

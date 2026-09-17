@@ -4,7 +4,7 @@ import { searchParamsToRequest } from '@/src/utils/functions';
 const STEPS = [
   {
     title: 'Введите баллы',
-    text: 'Только результаты ЕГЭ и пожелания. Без сканов паспорта — это к Госуслугам.',
+    text: 'Только результаты ЕГЭ и пожелания.',
   },
   {
     title: 'Оцените шансы',
