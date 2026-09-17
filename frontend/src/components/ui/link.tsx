@@ -1,9 +1,14 @@
-import NextLink, { LinkProps } from 'next/link';
-import { ReactNode } from 'react';
-export const Link = ({ children, ...props }: LinkProps & { children: ReactNode }) => {
-  return (
-    <NextLink className="transition duration-150 hover:text-blue-600" {...props}>
-      {children}
-    </NextLink>
-  );
-};
+import NextLink, { type LinkProps } from 'next/link';
+import type { ReactNode } from 'react';
+
+export const Link = ({
+  children,
+  className = '',
+  ...props
+}: LinkProps & { children: ReactNode; className?: string }) => (
+  <NextLink
+    className={`font-medium text-navy underline-offset-4 transition duration-150 hover:underline ${className}`}
+    {...props}>
+    {children}
+  </NextLink>
+);

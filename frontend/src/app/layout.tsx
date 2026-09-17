@@ -1,7 +1,7 @@
-import { Header } from '@/components/header';
-import { Providers } from '@/components/providers/providers';
-import type { Metadata } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
+import { Header } from '@/src/components/header';
+import { Providers } from '@/src/components/providers/providers';
+import type { Metadata, Viewport } from 'next';
+import { Geist } from 'next/font/google';
 import './globals.css';
 
 const geistSans = Geist({
@@ -9,25 +9,31 @@ const geistSans = Geist({
   subsets: ['latin', 'cyrillic'],
 });
 
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin', 'cyrillic'],
-});
-
 export const metadata: Metadata = {
-  title: 'enrollee-2026',
-  description: 'Сервис для повышения комфорта поступления в вузы России',
+  title: 'UniVibe — подбор вуза по баллам ЕГЭ',
+  description:
+    'Введите баллы ЕГЭ и предпочтения — UniVibe покажет вузы, оценит шансы поступления и расскажет, какой там вайб по отзывам студентов.',
 };
 
-export default function RootLayout({ children }: LayoutProps<'/'>) {
+export const viewport: Viewport = {
+  colorScheme: 'light',
+  themeColor: '#c9d3f1',
+};
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="ru" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
-      <Providers>
-        <body className="flex min-h-full flex-col">
+    <html lang="ru" className={`${geistSans.variable} h-full antialiased`}>
+      <body className="flex min-h-full flex-col font-sans">
+        <Providers>
           <Header />
-          <main className="p-2">{children}</main>
-        </body>
-      </Providers>
+          <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-6 sm:px-6 sm:py-8">
+            {children}
+          </main>
+          <footer className="px-4 py-6 text-center text-xs text-muted">
+            UniVibe · Подача документов — через Госуслуги, а мы помогаем выбрать
+          </footer>
+        </Providers>
+      </body>
     </html>
   );
 }

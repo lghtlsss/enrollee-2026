@@ -1,20 +1,21 @@
-import { UniversitiesList } from '@/components/universities/universities-list';
+import { UniversitiesList } from '@/src/components/universities/universities-list';
+import type { Metadata } from 'next';
+import { Suspense } from 'react';
 
-const UniversitiesPage = async ({
-  searchParams,
-}: {
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
-}) => {
-  const params = await searchParams;
-  const dormitory = Boolean(params.dormitory);
-  const isBudget = Boolean(params.isBudget);
-  const ratings = params.rating;
-  let page = Number(params?.page);
-  if (!page) {
-    page = 1;
-  }
-  console.log(typeof dormitory, typeof isBudget, typeof ratings, page);
-  return <UniversitiesList page={Number(page)} filters={{ dormitory, isBudget, ratings }} />;
-};
+export const metadata: Metadata = { title: 'Вузы — UniVibe' };
 
-export default UniversitiesPage;
+export default function UniversitiesPage() {
+  return (
+    <div className="flex flex-col gap-6">
+      <div>
+        <h1 className="text-2xl font-bold text-navy-deep sm:text-3xl">Все вузы</h1>
+        <p className="mt-1 text-sm text-muted">
+          Каталог университетов с рейтингом, вайбом и отзывами студентов.
+        </p>
+      </div>
+      <Suspense>
+        <UniversitiesList />
+      </Suspense>
+    </div>
+  );
+}

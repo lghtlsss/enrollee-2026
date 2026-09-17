@@ -1,26 +1,49 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --cream: #faf8f2;
+  --paper: #ffffff;
+  --lavender: #c9d3f1;
+  --lavender-soft: #e3e9f8;
+  --navy: #2f4079;
+  --navy-deep: #1f2c5a;
+  --ink: #1d2340;
+  --muted: #5d6685;
+  --line: #d8def0;
+  --chance-high: #b9dba1;
+  --chance-high-ink: #3a6d22;
+  --chance-medium: #f6c896;
+  --chance-medium-ink: #8a5210;
+  --chance-low: #f4a9a9;
+  --chance-low-ink: #9a2e2e;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-cream: var(--cream);
+  --color-paper: var(--paper);
+  --color-lavender: var(--lavender);
+  --color-lavender-soft: var(--lavender-soft);
+  --color-navy: var(--navy);
+  --color-navy-deep: var(--navy-deep);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-chance-high: var(--chance-high);
+  --color-chance-high-ink: var(--chance-high-ink);
+  --color-chance-medium: var(--chance-medium);
+  --color-chance-medium-ink: var(--chance-medium-ink);
+  --color-chance-low: var(--chance-low);
+  --color-chance-low-ink: var(--chance-low-ink);
+  --font-sans: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  --radius-pill: 999px;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--cream);
+  color: var(--ink);
+}
+
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+  appearance: none;
 }
