@@ -2,6 +2,13 @@ export type University = {
   id: number;
   name: string;
   city: string;
+  rating: number;
+};
+
+export type UniversityDetails = {
+  id: number;
+  name: string;
+  city: string;
   description: string;
   passingScore: number;
   freePlacesCount: number;

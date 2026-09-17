@@ -5,11 +5,16 @@ const UniversitiesPage = async ({
 }: {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) => {
-  let page = Number((await searchParams)?.page);
+  const params = await searchParams;
+  const dormitory = Boolean(params.dormitory);
+  const isBudget = Boolean(params.isBudget);
+  const ratings = params.rating;
+  let page = Number(params?.page);
   if (!page) {
     page = 1;
   }
-  return <UniversitiesList page={Number(page)} />;
+  console.log(typeof dormitory, typeof isBudget, typeof ratings, page);
+  return <UniversitiesList page={Number(page)} filters={{ dormitory, isBudget, ratings }} />;
 };
 
 export default UniversitiesPage;

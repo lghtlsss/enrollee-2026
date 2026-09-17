@@ -7,7 +7,13 @@ import { SubmitEvent, useState } from 'react';
 import { Input } from '../../ui/input';
 import { AddExamResultButton } from './add-exam-result-button';
 
-export const EnterExamsResultForm = () => {
+export const ExamsResultForm = ({
+  nextCard,
+  currentCard,
+}: {
+  nextCard: () => void;
+  currentCard: number;
+}) => {
   const [exams, setExams] = useState<string[]>(['russian']);
   const queryClient = useQueryClient();
 
@@ -21,7 +27,6 @@ export const EnterExamsResultForm = () => {
     }
     // fetch(https://change-user-results);
     queryClient.setQueryData(['user'], (oldUser: User) => {
-      console.log(oldUser);
       if (!oldUser) return oldUser;
 
       return {
@@ -29,6 +34,7 @@ export const EnterExamsResultForm = () => {
         examsScore: newExams,
       };
     });
+    nextCard();
   };
 
   const addExam = (exam: string) => {
@@ -39,7 +45,9 @@ export const EnterExamsResultForm = () => {
     setExams(exams.filter(item => item != exam));
   };
   return (
-    <div className="mx-auto flex w-125 flex-col gap-4 border-2 p-2">
+    <div
+      className="absolute flex w-125 flex-col gap-4 border-2 p-2 transition duration-500"
+      style={{ transform: `translateX(${(1 - currentCard) * 1920}px)` }}>
       <form className="flex flex-col gap-2" onSubmit={handleSubmit}>
         {exams.map(item => (
           <div key={item} className="flex items-center justify-between">

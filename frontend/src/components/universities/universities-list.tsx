@@ -7,30 +7,26 @@ const testData: University[] = [
     id: 1,
     name: 'ВШЭ',
     city: 'Москва',
-    description: 'Описание',
-    passingScore: 300,
-    educationCost: 900000,
-    freePlacesCount: 200,
     rating: 100.1,
-    vibeValue: 42,
   },
   {
     id: 2,
     name: 'ВШЭ',
     city: 'Москва',
-    description: 'Описание',
-    passingScore: 300,
-    educationCost: 900000,
-    freePlacesCount: 200,
     rating: 100.1,
-    vibeValue: 42,
   },
 ];
 
-export const UniversitiesList = async ({ page }: { page: number }) => {
-  //  const response = await fetch(`https://universities.list?page=${page}`);
+export const UniversitiesList = async ({
+  page,
+  filters,
+}: {
+  page: number;
+  filters: { dormitory?: boolean; isBudget?: boolean; ratings?: string | string[] };
+}) => {
+  //  const response = await fetch(`https://${BACKEND_URL}/universties?skip=${page-1}&city=${filters.city}`);
   //  const data = await response.json();
-  //  console.log(page);
+  // data.items
 
   return (
     <div>

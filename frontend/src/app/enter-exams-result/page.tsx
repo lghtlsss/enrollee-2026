@@ -1,6 +1,6 @@
-import { EnterExamsResultForm } from '@/components/user/exams-result/enter-exams-result-form';
+import { ExamsResultForm } from '@/components/calculator/user-info/exams-result-form';
 
-const EnterExamsResultPage = () => {
-  return <EnterExamsResultForm />;
+const ExamsResultPage = () => {
+  return <ExamsResultForm />;
 };
-export default EnterExamsResultPage;
+export default ExamsResultPage;
