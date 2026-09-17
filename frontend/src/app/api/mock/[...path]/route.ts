@@ -9,9 +9,6 @@ import type {
 } from '@/src/utils/types';
 import { NextRequest, NextResponse } from 'next/server';
 
-// Демонстрационный бэкенд, повторяющий контракты FastAPI из ветки backend-общий.
-// Хранит пользователей, профили и избранное в памяти процесса dev-сервера.
-
 type StoredUser = User & { id: number; password: string };
 
 const store = globalThis as unknown as {

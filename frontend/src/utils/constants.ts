@@ -1,6 +1,6 @@
 import type { Chance } from './types';
 
-export const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL ?? '/api/mock';
+export const BACKEND_URL = process.env.BACKEND_URL ?? '/api/mock';
 
 export const TOKEN_KEY = 'access_token';
 
