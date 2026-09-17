@@ -151,6 +151,19 @@ async function handle(request: NextRequest, segments: string[]) {
     return detail ? json(detail) : error(404, 'Program not found');
   }
 
+  if (root === 'subjects') {
+    const names = [
+      ...new Set(programs.flatMap(program => program.subjects.map(subject => subject.name))),
+    ];
+
+    return json(
+      names.map((name, index) => ({
+        id: index + 1,
+        name,
+      })),
+    );
+  }
+
   if (root === 'recommendations' && method === 'POST') {
     const body = (await request.json()) as RecommendationRequest;
     const items: RecommendationItem[] = [];

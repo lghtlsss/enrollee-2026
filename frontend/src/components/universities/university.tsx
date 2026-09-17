@@ -132,9 +132,7 @@ export const University = ({ universityId }: { universityId: number }) => {
             {university.programs.map(program => (
               <li key={program.id} className="rounded-xl border border-[#E4E1D8] bg-white p-4">
                 <p className="text-sm text-[#1F2430]">{program.name}</p>
-                <p className="mt-1 text-xs text-[#8B90A0]">
-                  Направление №{program.direction_id}
-                </p>
+                <p className="mt-1 text-xs text-[#8B90A0]">Направление №{program.direction_id}</p>
               </li>
             ))}
           </ul>
@@ -144,8 +142,8 @@ export const University = ({ universityId }: { universityId: number }) => {
           <p className="text-sm text-[#5B6270]">Раздел о кампусе появится здесь.</p>
         )}
 
-        {section === 'Отзывы' && (
-          reviewsQuery.isPending ? (
+        {section === 'Отзывы' &&
+          (reviewsQuery.isPending ? (
             <p className="text-sm text-[#5B6270]">Загружаем отзывы…</p>
           ) : reviewsQuery.error ? (
             <p className="text-sm text-[#5B6270]">Не удалось загрузить отзывы.</p>
@@ -157,8 +155,7 @@ export const University = ({ universityId }: { universityId: number }) => {
             </div>
           ) : (
             <p className="text-sm text-[#5B6270]">Отзывов пока нет.</p>
-          )
-        )}
+          ))}
       </main>
     </div>
   );
