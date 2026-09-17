@@ -1,7 +1,8 @@
 fastapi[standard]~=0.141.1
-SQLAlchemy~=2.0.53
+SQLAlchemy~=2.0.54
 pydantic~=2.13.5
 pwdlib[argon2]~=0.3.1
 pydantic-settings
 python-jose
 psycopg2
+python-dotenv
